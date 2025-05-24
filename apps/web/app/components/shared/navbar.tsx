@@ -16,17 +16,17 @@ import { useCart } from "~/context/cart-context";
 
 interface NavbarProps {
   onlyLogo: boolean;
-  isSearch: boolean;
+  isSearch?: boolean;
 }
 
 export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const [shouldAnimate, setShouldAnimate] = useState(false);
 
   // Trigger animasi saat cartCount > 0 dan berubah
   useEffect(() => {
-    if (cartItems > 0) {
+    if (cartItems.length > 0) {
       setShouldAnimate(true);
       const timer = setTimeout(() => setShouldAnimate(false), 500);
       return () => clearTimeout(timer);
@@ -43,6 +43,7 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
   const logout = () => {
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
+    clearCart();
   };
 
   return (

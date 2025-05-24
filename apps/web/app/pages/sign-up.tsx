@@ -14,14 +14,13 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Separator } from "~/components/ui/separator";
 import Footer from "~/components/shared/footer";
 import Navbar from "~/components/shared/navbar";
 import { z } from "zod";
 import { trpc } from "~/lib/trpc";
 import { toast } from "sonner";
 
-export const registerSchema = z
+export const signUpSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Email not valid"),
@@ -33,25 +32,25 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
-type RegisterData = z.infer<typeof registerSchema>;
+type SignUpData = z.infer<typeof signUpSchema>;
 
-export default function RegisterPage() {
+export default function SignUpPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState<RegisterData>({
+  const [formData, setFormData] = useState<SignUpData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<
-    Partial<Record<keyof RegisterData, string>>
+    Partial<Record<keyof SignUpData, string>>
   >({});
 
   const registerMutation = trpc.auth.register.useMutation({
     onSuccess: () => {
-      toast.success("Registration success! Please login.");
+      toast.success("Registration success! Please sign in.");
       navigate("/sign-in");
     },
     onError: (error) => {
@@ -69,12 +68,12 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const validation = registerSchema.safeParse(formData);
+    const validation = signUpSchema.safeParse(formData);
     if (!validation.success) {
-      const fieldErrors: Partial<Record<keyof RegisterData, string>> = {};
+      const fieldErrors: Partial<Record<keyof SignUpData, string>> = {};
       validation.error.errors.forEach((err) => {
         if (err.path[0]) {
-          fieldErrors[err.path[0] as keyof RegisterData] = err.message;
+          fieldErrors[err.path[0] as keyof SignUpData] = err.message;
         }
       });
       setErrors(fieldErrors);

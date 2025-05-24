@@ -7,14 +7,19 @@ import {
   type ReactNode,
 } from "react";
 
-type CartItem = {
+export type CartItem = {
   id: string;
   name: string;
-  image?: string;
+  image?: Image;
   price: number;
   quantity: number;
   storage?: string;
   condition?: string;
+};
+
+type Image = {
+  id: string;
+  imageUrl: string;
 };
 
 type CartContextType = {
