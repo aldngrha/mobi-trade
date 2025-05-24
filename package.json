@@ -1,15 +1,20 @@
 {
-  "name": "technical-test",
+  "name": "monorepo-mobi-trade",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:api": "bun run apps/api/index.ts",
     "lint": "turbo run lint",
+    "seed": "bun run apps/api/prisma/seed.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prisma:generate": "prisma generate --schema=apps/api/prisma/schema.prisma",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "prettier": "^3.5.3",
+    "prisma": "^6.8.2",
     "turbo": "^2.5.3",
     "typescript": "5.8.2"
   },
@@ -20,5 +25,14 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@hono/trpc-server": "^0.3.4",
+    "@prisma/client": "^6.8.2",
+    "@trpc/server": "^11.1.2",
+    "bcryptjs": "^3.0.2",
+    "hono": "^4.7.10",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.24.4"
+  }
 }

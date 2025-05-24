@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String        @id @default(uuid())
+  email     String        @unique
+  password  String
+  name      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  role      Role          @default(USER)
+  Order     Transaction[]
+}
+
+model Product {
+  id                   String            @id
+  sku                  String            @unique
+  slug                 String            @unique
+  name                 String
+  brand                String?
+  model                String
+  description          String
+  price                Decimal           @db.Decimal(10, 2)
+  discount             Int?
+  condition            String?
+  storage              String?
+  minimumOrderQuantity Int
+  warrantyMonths       Int?
+  stockQuantity        Int
+  rating               Float?
+  reviewsCount         Int?
+  batteryHealth        Int?
+  ram                  String?
+  display              String?
+  processor            String?
+  camera               String?
+  battery              String?
+  os                   String?
+  connectivity         String?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  color                String?
+  galleries            Gallery[]
+  TransactionItem      TransactionItem[]
+}
+
+model Gallery {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id                String            @id @default(uuid())
+  userId            String
+  status            TransactionStatus @default(PENDING)
+  totalPrice        Decimal           @db.Decimal(10, 2)
+  shippingAddressId String?
+  shippingMethod    String
+  paymentMethod     String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  payments          Payment[]
+  shippingAddress   ShippingAddress?
+  user              User              @relation(fields: [userId], references: [id])
+  items             TransactionItem[]
+}
+
+model TransactionItem {
+  id            String      @id @default(uuid())
+  transactionId String
+  productId     String
+  price         Decimal     @db.Decimal(10, 2)
+  quantity      Int
+  storage       String?
+  condition     String?
+  product       Product     @relation(fields: [productId], references: [id])
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+}
+
+model ShippingAddress {
+  id            String      @id @default(uuid())
+  transactionId String      @unique
+  fullName      String
+  addressLine1  String
+  city          String
+  state         String
+  postalCode    String
+  email         String
+  country       String
+  phoneNumber   String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+}
+
+model Payment {
+  id               String        @id @default(uuid())
+  transactionId    String
+  paymentMethod    String
+  paymentStatus    PaymentStatus @default(PENDING)
+  paymentReference String?
+  paidAt           DateTime?
+  transaction      Transaction   @relation(fields: [transactionId], references: [id])
+}
+
+enum TransactionStatus {
+  PENDING
+  PAID
+  APPROVED
+  REJECTED
+  SHIPPED
+  DELIVERED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  EXPIRED
+}
+
+enum Role {
+  ADMIN
+  USER
+}

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b0c5fa4-5319-452c-aade-cce9dff71d62" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/client.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/client.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/default.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/default.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/edge.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/edge.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/index-browser.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/libquery_engine-darwin-arm64.dylib.node" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/edge-esm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/edge.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/index-browser.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/index-browser.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/library.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/library.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/react-native.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/runtime/wasm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/schema.prisma" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/wasm.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/generated/client/wasm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/prisma/client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/prisma/migrations/20250523145025_init/migration.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/prisma/migrations/migration_lock.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/prisma/schema.prisma" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/prisma/seed.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/schemas/auth.schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/schemas/checkout.schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/schemas/product.schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/services/auth.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/services/checkout.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/services/product.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/context.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/router.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/routes/auth.route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/routes/checkout.route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/routes/product.route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/utils/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/utils/jwt.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/utils/trpc.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/components/shared/card-product/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/components/shared/footer/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/components/shared/navbar/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/components/shared/protected-route/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/context/cart-context.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/data.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/query-client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/trpc.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/admin/dashboard/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/checkout/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/landing-page/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/not-found/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/product/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/sign-in/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/sign-up/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/pages/success/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/$productSlug.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/+types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/checkout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/not-found.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/sign-in.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/sign-up.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/success.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bun.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/fonts/GeistMonoVF.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/fonts/GeistVF.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/page.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/app/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/eslint.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/next.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/file-text.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/globe.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/next.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/turborepo-dark.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/turborepo-light.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/public/window.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/routes/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/routes/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/logo-dark.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/logo-light.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/welcome.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/web/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2xGqYng4q0je5lfWd8eGLrLbJL0" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/apps/web/app/lib/trpc",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev:api.executor": "Run",
+    "npm.prisma:generate.executor": "Run",
+    "npm.seed.executor": "Run",
+    "npm.web > dev.executor": "Run",
+    "prettierjs.PrettierConfiguration.Package": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/node_modules/prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/web/app/lib/trpc" />
+      <recent name="$PROJECT_DIR$/apps/web/app/routes" />
+      <recent name="$PROJECT_DIR$/apps/web" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/web/app/pages/admin" />
+      <recent name="$PROJECT_DIR$/apps/web/app/pages" />
+      <recent name="$PROJECT_DIR$/apps/web/app/components/shared/navbar" />
+      <recent name="$PROJECT_DIR$/apps/web/app/lib" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.dev:api">
+    <configuration name="dev:api" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev:api" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="prisma:generate" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="prisma:generate" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="seed" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="seed" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="web &gt; dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/apps/web/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev:api" />
+        <item itemvalue="npm.prisma:generate" />
+        <item itemvalue="npm.web &gt; dev" />
+        <item itemvalue="npm.seed" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b0c5fa4-5319-452c-aade-cce9dff71d62" name="Changes" comment="" />
+      <created>1747574808114</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747574808114</updated>
+      <workItem from="1747574808839" duration="395000" />
+      <workItem from="1747575207558" duration="7761000" />
+      <workItem from="1747636950870" duration="4806000" />
+      <workItem from="1747736939398" duration="17491000" />
+      <workItem from="1747894311920" duration="192000" />
+      <workItem from="1747894514867" duration="16132000" />
+      <workItem from="1748005200926" duration="656000" />
+      <workItem from="1748005860366" duration="5380000" />
+      <workItem from="1748012558426" duration="2571000" />
+      <workItem from="1748067000342" duration="2792000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
