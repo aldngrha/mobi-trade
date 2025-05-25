@@ -43,7 +43,6 @@ export const loginUser = async (email: string, password: string) => {
   return {
     token,
     user: {
-      id: user.id,
       name: user.name,
       email: user.email,
     },

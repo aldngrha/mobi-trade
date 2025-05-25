@@ -1,17 +1,22 @@
 import { Navigate, useLocation } from "react-router";
 import type { JSX } from "react";
+import { useAuth } from "~/context/auth-context";
 
 export function ProtectedRoute({ children }: { children: JSX.Element }) {
-  if (typeof window === "undefined") return null; // SSR safety
+  if (typeof window === "undefined") return null;
 
-  const isLoggedIn = !!localStorage.getItem("authToken");
+  const { token, isInitialized } = useAuth();
   const location = useLocation();
 
   const isOpenPath =
     location.pathname === "/" || location.pathname.startsWith("/products");
 
-  if (!isLoggedIn && !isOpenPath) {
-    // redirect to sign-in if not logged in and trying to access protected page
+  if (!isInitialized) {
+    // opsional: bisa kasih loading spinner atau null
+    return null;
+  }
+
+  if (!token && !isOpenPath) {
     return <Navigate to="/sign-in" replace />;
   }
 

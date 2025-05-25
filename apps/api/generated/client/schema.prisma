@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id        String        @id @default(uuid())
+  id        String        @id
   email     String        @unique
   password  String
   name      String
@@ -52,7 +52,7 @@ model Product {
 }
 
 model Gallery {
-  id        String   @id @default(cuid())
+  id        String   @id
   imageUrl  String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
@@ -61,13 +61,14 @@ model Gallery {
 }
 
 model Transaction {
-  id                String            @id @default(uuid())
+  id                String            @id
   userId            String
   status            TransactionStatus @default(PENDING)
-  totalPrice        Decimal           @db.Decimal(10, 2)
+  totalPrice        Decimal?          @db.Decimal(10, 2)
   shippingAddressId String?
   shippingMethod    String
   paymentMethod     String
+  orderReference    String
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   payments          Payment[]
@@ -77,7 +78,7 @@ model Transaction {
 }
 
 model TransactionItem {
-  id            String      @id @default(uuid())
+  id            String      @id
   transactionId String
   productId     String
   price         Decimal     @db.Decimal(10, 2)
@@ -89,10 +90,10 @@ model TransactionItem {
 }
 
 model ShippingAddress {
-  id            String      @id @default(uuid())
+  id            String      @id
   transactionId String      @unique
   fullName      String
-  addressLine1  String
+  addressLine   String
   city          String
   state         String
   postalCode    String
@@ -103,7 +104,7 @@ model ShippingAddress {
 }
 
 model Payment {
-  id               String        @id @default(uuid())
+  id               String        @id
   transactionId    String
   paymentMethod    String
   paymentStatus    PaymentStatus @default(PENDING)

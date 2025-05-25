@@ -176,6 +176,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   shippingAddressId: 'shippingAddressId',
   shippingMethod: 'shippingMethod',
   paymentMethod: 'paymentMethod',
+  orderReference: 'orderReference',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -194,7 +195,7 @@ exports.Prisma.ShippingAddressScalarFieldEnum = {
   id: 'id',
   transactionId: 'transactionId',
   fullName: 'fullName',
-  addressLine1: 'addressLine1',
+  addressLine: 'addressLine',
   city: 'city',
   state: 'state',
   postalCode: 'postalCode',

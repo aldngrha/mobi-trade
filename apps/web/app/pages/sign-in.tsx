@@ -22,6 +22,7 @@ import Navbar from "~/components/shared/navbar";
 import { z } from "zod";
 import { trpc } from "~/lib/trpc";
 import { toast } from "sonner";
+import { useAuth } from "~/context/auth-context";
 
 export const signInSchema = z.object({
   email: z.string().email("Email not valid"),
@@ -40,10 +41,11 @@ export default function SignInPage() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof SignInData, string>>
   >({});
+  const { setToken } = useAuth();
 
   const signInMutation = trpc.auth.login.useMutation({
-    onSuccess: ({ token, user }) => {
-      localStorage.setItem("authToken", token);
+    onSuccess: ({ token }) => {
+      setToken(token);
       toast.success("Login success!");
       navigate("/");
     },

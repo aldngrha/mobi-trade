@@ -15,15 +15,19 @@ import type { Dispatch, SetStateAction } from "react";
 type PaymentStepProps = {
   setStep: Dispatch<SetStateAction<Step>>;
   setPaymentMethod: Dispatch<SetStateAction<PaymentMethod>>;
+  updatePaymentMethod: (paymentMethod: string) => void;
+  orderReference: string;
 };
 
 type Step = "cart" | "shipping" | "payment" | "review";
 
-type PaymentMethod = "credit" | "paypal" | "bank";
+type PaymentMethod = "credit" | "bank";
 
 export default function PaymentStep({
   setStep,
   setPaymentMethod,
+  updatePaymentMethod,
+  orderReference,
 }: PaymentStepProps) {
   return (
     <div>
@@ -33,22 +37,22 @@ export default function PaymentStep({
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="credit-card" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger
                 value="credit-card"
-                onClick={() => setPaymentMethod("credit")}
+                onClick={() => {
+                  setPaymentMethod("credit");
+                  updatePaymentMethod("credit");
+                }}
               >
                 Credit Card
               </TabsTrigger>
               <TabsTrigger
-                value="paypal"
-                onClick={() => setPaymentMethod("paypal")}
-              >
-                PayPal
-              </TabsTrigger>
-              <TabsTrigger
                 value="bank-transfer"
-                onClick={() => setPaymentMethod("bank")}
+                onClick={() => {
+                  setPaymentMethod("bank");
+                  updatePaymentMethod("bank");
+                }}
               >
                 Bank Transfer
               </TabsTrigger>
@@ -77,15 +81,6 @@ export default function PaymentStep({
                 Your payment information is secure and encrypted
               </div>
             </TabsContent>
-            <TabsContent value="paypal" className="space-y-4 mt-4">
-              <div className="p-6 text-center border rounded-md">
-                <div className="text-xl font-bold mb-2">PayPal</div>
-                <p className="text-muted-foreground mb-4">
-                  You will be redirected to PayPal to complete your payment.
-                </p>
-                <Button className="w-full">Continue with PayPal</Button>
-              </div>
-            </TabsContent>
             <TabsContent value="bank-transfer" className="space-y-4 mt-4">
               <div className="p-6 border rounded-md">
                 <div className="text-xl font-bold mb-2">
@@ -110,7 +105,7 @@ export default function PaymentStep({
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="text-muted-foreground">Reference:</div>
-                    <div>ORDER-{Math.floor(Math.random() * 1000000)}</div>
+                    <div>{orderReference}</div>
                   </div>
                 </div>
                 <div className="mt-4 text-sm text-muted-foreground">

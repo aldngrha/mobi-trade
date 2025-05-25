@@ -1,16 +1,17 @@
 import { prisma } from "../prisma/client";
-import { Prisma } from "@prisma/client";
+import { generateUlid } from "../utils";
+import { TRPCError } from "@trpc/server";
 
-type CheckoutItem = {
+export type CheckoutItem = {
   productId: string;
   quantity: number;
   storage: string;
   condition: string;
 };
 
-type ShippingAddressInput = {
+export type ShippingAddressInput = {
   fullName: string;
-  addressLine1: string;
+  addressLine: string;
   email: string;
   city: string;
   state: string;
@@ -19,31 +20,51 @@ type ShippingAddressInput = {
   phoneNumber: string;
 };
 
-type CheckoutInput = {
+export type CheckoutInput = {
   userId: string;
   items: CheckoutItem[];
   shippingAddress: ShippingAddressInput;
   shippingMethod: string;
   paymentMethod: string;
+  orderReference: string;
 };
 
-export const checkout = async (input: unknown) => {
-  const { userId, items, shippingAddress, shippingMethod, paymentMethod } =
-    input;
+export const checkout = async (input: CheckoutInput) => {
+  const {
+    userId,
+    items,
+    shippingAddress,
+    shippingMethod,
+    paymentMethod,
+    orderReference,
+  } = input;
 
-  if (items.length === 0) throw new Error("Cart cannot be empty");
+  if (items.length === 0) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Cart cannot be empty",
+    });
+  }
 
-  // Fetch products and validate stock/prices
+  const itemIds = items.map((item) => item.productId);
+
   const products = await prisma.product.findMany({
     where: {
-      id: { in: items.map((item) => item.productId) },
+      id: { in: itemIds },
     },
   });
 
-  if (products.length !== items.length)
-    throw new Error("Some products are invalid");
+  const validIds = products.map((p) => p.id);
+  const invalidIds = itemIds.filter((id) => !validIds.includes(id));
 
-  // Validate stock quantity (optional)
+  if (invalidIds.length > 0) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: `Invalid product IDs: ${invalidIds.join(", ")}`,
+    });
+  }
+
+  // Validate stock quantity
   for (const item of items) {
     const product = products.find((p) => p.id === item.productId);
     if (!product) throw new Error(`Product ${item.productId} not found`);
@@ -59,18 +80,19 @@ export const checkout = async (input: unknown) => {
     return sum + price * item.quantity;
   }, 0);
 
-  // Run everything in a transaction
   const transaction = await prisma.$transaction(async (tx) => {
     // Create Transaction first
     const createdTransaction = await tx.transaction.create({
       data: {
+        id: generateUlid(),
         userId,
         status: "PENDING",
-        totalPrice: new Prisma.Decimal(totalPrice.toFixed(2)),
+        totalPrice: totalPrice.toFixed(2),
         shippingMethod,
         paymentMethod,
+        orderReference,
         shippingAddress: {
-          create: shippingAddress,
+          create: { id: generateUlid(), ...shippingAddress },
         },
       },
     });
@@ -81,6 +103,7 @@ export const checkout = async (input: unknown) => {
         const product = products.find((p) => p.id === item.productId)!;
         return tx.transactionItem.create({
           data: {
+            id: generateUlid(),
             transactionId: createdTransaction.id,
             productId: product.id,
             price: product.price,
@@ -92,7 +115,6 @@ export const checkout = async (input: unknown) => {
       }),
     );
 
-    // Optionally, update stock quantity here
     await Promise.all(
       items.map((item) =>
         tx.product.update({

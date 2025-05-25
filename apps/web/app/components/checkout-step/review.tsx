@@ -6,37 +6,88 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
-import { ArrowLeft, Check, CreditCard, Truck } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  CreditCard,
+  LoaderCircle,
+  Truck,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useNavigate } from "react-router";
-import { type Dispatch, type SetStateAction, useState } from "react";
-import type { CartItem } from "~/context/cart-context";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
+import { type CartItem, useCart } from "~/context/cart-context";
+import { trpc } from "~/lib/trpc";
+import { toast } from "sonner";
 
 type ReviewStepProps = {
   setStep: Dispatch<SetStateAction<Step>>;
   cartItems: CartItem[];
-  shippingMethod: "standard" | "express" | "priority";
-  paymentMethod: "credit" | "paypal" | "bank";
 };
 
 type Step = "cart" | "shipping" | "payment" | "review";
 
-export default function ReviewStep({
-  setStep,
-  cartItems,
-  shippingMethod,
-  paymentMethod,
-}: ReviewStepProps) {
-  const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+type shippingAddress = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  addressLine: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+};
 
-  const handleSubmitOrder = () => {
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      navigate("/checkout/success");
-    }, 1500);
+type Items = {
+  productId: string;
+  name: string;
+  quantity: number;
+  condition: string;
+  storage: string;
+};
+
+export default function ReviewStep({ setStep, cartItems }: ReviewStepProps) {
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
+  const [checkoutData, setCheckoutData] = useState<{
+    userId: string;
+    items: Items[];
+    shippingAddress: shippingAddress;
+    shippingMethod: string;
+    paymentMethod: string;
+    orderReference: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("checkout-data");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setCheckoutData(parsed);
+    }
+  }, []);
+
+  const checkoutMutation = trpc.checkout.create.useMutation({
+    onSuccess: () => {
+      toast.success("Order placed successfully!");
+      localStorage.removeItem("checkout-data");
+      navigate(`/checkout/success`);
+      clearCart();
+      localStorage.removeItem("checkout-data");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleSubmitOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!checkoutData) {
+      toast.error("Checkout data is missing");
+      return;
+    }
+
+    checkoutMutation.mutate(checkoutData);
   };
 
   return (
@@ -82,12 +133,22 @@ export default function ReviewStep({
 
             <div>
               <h3 className="font-medium text-lg mb-2">Shipping Address</h3>
-              <div className="text-sm">
-                <p>John Doe</p>
-                <p>123 Main St</p>
-                <p>New York, NY 10001</p>
-                <p>United States</p>
-              </div>
+              {checkoutData?.shippingAddress ? (
+                <div className="text-sm space-y-1">
+                  <p>{checkoutData.shippingAddress.fullName}</p>
+                  <p>{checkoutData.shippingAddress.addressLine}</p>
+                  <p>
+                    {checkoutData.shippingAddress.city},{" "}
+                    {checkoutData.shippingAddress.state}{" "}
+                    {checkoutData.shippingAddress.postalCode}
+                  </p>
+                  <p>{checkoutData.shippingAddress.country}</p>
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm italic">
+                  Loading...
+                </p>
+              )}
             </div>
 
             <Separator />
@@ -97,9 +158,9 @@ export default function ReviewStep({
               <div className="flex items-center gap-2">
                 <Truck className="h-4 w-4" />
                 <span>
-                  {shippingMethod === "standard"
+                  {checkoutData?.shippingMethod === "standard"
                     ? "Standard Shipping (5-7 business days)"
-                    : shippingMethod === "express"
+                    : checkoutData?.shippingMethod === "express"
                       ? "Express Shipping (2-3 business days)"
                       : "Priority Shipping (1-2 business days)"}
                 </span>
@@ -113,14 +174,24 @@ export default function ReviewStep({
               <div className="flex items-center gap-2">
                 <CreditCard className="h-4 w-4" />
                 <span>
-                  {paymentMethod === "credit"
+                  {checkoutData?.paymentMethod === "credit"
                     ? "Credit Card (ending in 3456)"
-                    : paymentMethod === "paypal"
-                      ? "PayPal"
-                      : "Bank Transfer"}
+                    : "Bank Transfer"}
                 </span>
               </div>
             </div>
+
+            {checkoutData?.paymentMethod === "bank" && (
+              <>
+                <Separator />
+                <div>
+                  <h3 className="font-medium text-lg mb-2">Order Reference</h3>
+                  <div className="flex items-center gap-2">
+                    <p>{checkoutData.orderReference}</p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
@@ -128,9 +199,17 @@ export default function ReviewStep({
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Payment
           </Button>
-          <Button onClick={handleSubmitOrder} disabled={isSubmitting}>
-            {isSubmitting ? "Processing..." : "Place Order"}
-            {!isSubmitting && <Check className="ml-2 h-4 w-4" />}
+          <Button
+            onClick={handleSubmitOrder}
+            disabled={checkoutMutation.isPending}
+            className="cursor-pointer"
+          >
+            {checkoutMutation.isPending ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "Place Order"
+            )}
+            {!checkoutMutation.isPending && <Check className="ml-2 h-4 w-4" />}
           </Button>
         </CardFooter>
       </Card>

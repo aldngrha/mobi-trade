@@ -9,15 +9,30 @@ import { Button } from "~/components/ui/button";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { type CartItem } from "~/context/cart-context";
 import { useNavigate } from "react-router";
+import type { CheckoutItem } from "../../../../api/services/checkout.service";
 
 type CartStep = {
   cartItems: CartItem[];
-  setStep: () => void;
+  onContinue: (items: CheckoutItem[]) => void; // ✅ new
   clearCart: () => void;
 };
 
-export default function CartStep({ cartItems, setStep, clearCart }: CartStep) {
+export default function CartStep({
+  cartItems,
+  onContinue,
+  clearCart,
+}: CartStep) {
   const navigate = useNavigate();
+
+  const handleContinue = () => {
+    const items = cartItems.map((item) => ({
+      productId: item.id,
+      quantity: item.quantity,
+      condition: item.condition,
+      storage: item.storage,
+    }));
+    onContinue(items);
+  };
 
   return (
     <div>
@@ -67,7 +82,7 @@ export default function CartStep({ cartItems, setStep, clearCart }: CartStep) {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Shopping
           </Button>
-          <Button onClick={setStep} className="cursor-pointer">
+          <Button onClick={handleContinue} className="cursor-pointer">
             Continue to Shipping
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

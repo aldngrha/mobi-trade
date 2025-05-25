@@ -13,6 +13,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
 import { useCart } from "~/context/cart-context";
+import { useAuth } from "~/context/auth-context";
 
 interface NavbarProps {
   onlyLogo: boolean;
@@ -23,6 +24,7 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { cartItems, clearCart } = useCart();
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const { signOut } = useAuth();
 
   // Trigger animasi saat cartCount > 0 dan berubah
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
   }, [isLoggedIn]);
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    signOut();
     setIsLoggedIn(false);
     clearCart();
   };

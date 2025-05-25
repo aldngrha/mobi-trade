@@ -13,6 +13,7 @@ import { trpc, trpcClient } from "~/lib/trpc";
 import { queryClient } from "~/lib/query-client";
 import { Toaster } from "~/components/ui/sonner";
 import { CartProvider } from "~/context/cart-context";
+import { AuthProvider } from "~/context/auth-context";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -47,14 +48,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <CartProvider>
-          <Outlet />
-          <Toaster />
-        </CartProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <AuthProvider>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <CartProvider>
+            <Outlet />
+            <Toaster />
+          </CartProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </AuthProvider>
   );
 }
 

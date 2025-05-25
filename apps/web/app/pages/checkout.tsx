@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ShieldCheck, Truck } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -12,14 +12,54 @@ import CartStep from "~/components/checkout-step/cart";
 import ShippingStep from "~/components/checkout-step/shipping";
 import PaymentStep from "~/components/checkout-step/payment";
 import ReviewStep from "~/components/checkout-step/review";
+import type {
+  CheckoutInput,
+  CheckoutItem,
+  ShippingAddressInput,
+} from "../../../api/services/checkout.service";
+import { useCheckout } from "~/hooks/useCheckout";
+import { useAuth } from "~/context/auth-context";
 
 export default function CheckoutPage() {
+  const { user } = useAuth();
+  const defaultCheckoutState: CheckoutInput = {
+    userId: "",
+    items: [],
+    shippingAddress: {
+      fullName: "",
+      addressLine: "",
+      email: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+      phoneNumber: "",
+    },
+    shippingMethod: "",
+    paymentMethod: "",
+    orderReference: "",
+  };
+
+  useEffect(() => {
+    if (user) {
+      setCheckoutData((prev) => ({
+        ...prev,
+        userId: user.id,
+      }));
+    }
+  }, []);
+
+  const [checkoutData, setCheckoutData] = useCheckout<CheckoutInput>(
+    "checkout-data",
+    defaultCheckoutState,
+  );
+
   const [step, setStep] = useState<"cart" | "shipping" | "payment" | "review">(
     "cart",
   );
-  const [paymentMethod, setPaymentMethod] = useState<
-    "credit" | "paypal" | "bank"
-  >("credit");
+  const [paymentMethod, setPaymentMethod] = useState<"credit" | "bank">(
+    "credit",
+  );
 
   const { cartItems, clearCart } = useCart();
 
@@ -37,6 +77,35 @@ export default function CheckoutPage() {
   const taxRate = 0.08;
   const tax = subtotal * taxRate;
   const total = subtotal + shippingCost + tax;
+
+  const handleItemsContinue = (items: CheckoutItem[]) => {
+    setCheckoutData((prev) => ({ ...prev, items }));
+    setStep("shipping");
+  };
+
+  const updateShippingAddress = (shippingAddress: ShippingAddressInput) => {
+    setCheckoutData((prev) => ({ ...prev, shippingAddress }));
+  };
+
+  const updateShippingMethod = (shippingMethod: string) => {
+    setCheckoutData((prev) => ({ ...prev, shippingMethod }));
+  };
+
+  const updatePaymentMethod = (paymentMethod: string) => {
+    setCheckoutData((prev) => ({ ...prev, paymentMethod }));
+  };
+
+  const updateOrderReference = (orderReference: string) => {
+    setCheckoutData((prev) => ({ ...prev, orderReference }));
+  };
+
+  useEffect(() => {
+    // generate sekali pas mount
+    const generatedOrderRef = `ORDER-${Math.floor(Math.random() * 1000000)}`;
+    updateOrderReference(generatedOrderRef);
+  }, []);
+
+  console.log("Checkout Data:", checkoutData);
 
   return (
     <ProtectedRoute>
@@ -121,7 +190,7 @@ export default function CheckoutPage() {
 
                 {step === "cart" && (
                   <CartStep
-                    setStep={() => setStep("shipping")}
+                    onContinue={handleItemsContinue}
                     cartItems={cartItems}
                     clearCart={clearCart}
                   />
@@ -131,7 +200,9 @@ export default function CheckoutPage() {
                   <ShippingStep
                     setStep={setStep}
                     shippingMethod={shippingMethod}
+                    updateShippingAddress={updateShippingAddress}
                     setShippingMethod={setShippingMethod}
+                    updateShippingMethod={updateShippingMethod}
                   />
                 )}
 
@@ -139,16 +210,13 @@ export default function CheckoutPage() {
                   <PaymentStep
                     setStep={setStep}
                     setPaymentMethod={setPaymentMethod}
+                    updatePaymentMethod={updatePaymentMethod}
+                    orderReference={checkoutData.orderReference}
                   />
                 )}
 
                 {step === "review" && (
-                  <ReviewStep
-                    setStep={setStep}
-                    shippingMethod={shippingMethod}
-                    cartItems={cartItems}
-                    paymentMethod={paymentMethod}
-                  />
+                  <ReviewStep setStep={setStep} cartItems={cartItems} />
                 )}
               </div>
 
