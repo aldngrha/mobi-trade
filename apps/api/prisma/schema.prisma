@@ -19,25 +19,36 @@ model User {
   Order     Transaction[]
 }
 
+model Brand {
+  id        String   @id
+  name      String   @unique
+  models    Model[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Model {
+  id        String    @id
+  brandId   String
+  brand     Brand     @relation(fields: [brandId], references: [id])
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Product {
   id                   String            @id
+  modelId              String
+  model                Model             @relation(fields: [modelId], references: [id])
   sku                  String            @unique
   slug                 String            @unique
   name                 String
-  brand                String?
-  model                String
   description          String
   price                Decimal           @db.Decimal(10, 2)
   discount             Int?
-  condition            String?
-  storage              String?
   minimumOrderQuantity Int
-  warrantyMonths       Int?
-  stockQuantity        Int
-  rating               Float?
-  reviewsCount         Int?
   batteryHealth        Int?
-  ram                  String?
   display              String?
   processor            String?
   camera               String?
@@ -46,9 +57,24 @@ model Product {
   connectivity         String?
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
-  color                String?
   galleries            Gallery[]
-  TransactionItem      TransactionItem[]
+  transactionItems     TransactionItem[]
+  variants             ProductVariant[]
+}
+
+model ProductVariant {
+  id             String   @id
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id])
+  storage        String?
+  ram            String?
+  color          String?
+  condition      String?
+  price          Decimal  @db.Decimal(10, 2)
+  stockQuantity  Int
+  warrantyMonths Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Gallery {

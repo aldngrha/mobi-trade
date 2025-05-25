@@ -130,25 +130,32 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.BrandScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ModelScalarFieldEnum = {
+  id: 'id',
+  brandId: 'brandId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
+  modelId: 'modelId',
   sku: 'sku',
   slug: 'slug',
   name: 'name',
-  brand: 'brand',
-  model: 'model',
   description: 'description',
   price: 'price',
   discount: 'discount',
-  condition: 'condition',
-  storage: 'storage',
   minimumOrderQuantity: 'minimumOrderQuantity',
-  warrantyMonths: 'warrantyMonths',
-  stockQuantity: 'stockQuantity',
-  rating: 'rating',
-  reviewsCount: 'reviewsCount',
   batteryHealth: 'batteryHealth',
-  ram: 'ram',
   display: 'display',
   processor: 'processor',
   camera: 'camera',
@@ -156,8 +163,21 @@ exports.Prisma.ProductScalarFieldEnum = {
   os: 'os',
   connectivity: 'connectivity',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  color: 'color'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProductVariantScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  storage: 'storage',
+  ram: 'ram',
+  color: 'color',
+  condition: 'condition',
+  price: 'price',
+  stockQuantity: 'stockQuantity',
+  warrantyMonths: 'warrantyMonths',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.GalleryScalarFieldEnum = {
@@ -250,7 +270,10 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Brand: 'Brand',
+  Model: 'Model',
   Product: 'Product',
+  ProductVariant: 'ProductVariant',
   Gallery: 'Gallery',
   Transaction: 'Transaction',
   TransactionItem: 'TransactionItem',

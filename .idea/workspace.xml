@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b0c5fa4-5319-452c-aade-cce9dff71d62" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/data.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/query-client.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/web/app/lib/trpc.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/web/app/routes/+types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/schemas/brand.schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/schemas/model.schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/services/brand.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/services/model.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/routes/brand.route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/trpc/routes/model.route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/api/types/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/api/generated/client/edge.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/generated/client/edge.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/api/generated/client/index-browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/generated/client/index-browser.js" afterDir="false" />
@@ -18,17 +21,10 @@
       <change beforePath="$PROJECT_DIR$/apps/api/generated/client/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/generated/client/schema.prisma" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/api/generated/client/wasm.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/generated/client/wasm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/api/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/schemas/checkout.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/schemas/checkout.schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/services/auth.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/services/checkout.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/services/checkout.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/api/trpc/routes/checkout.route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/trpc/routes/checkout.route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/app/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/app/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/app/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/logo-dark.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/logo-light.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/app/welcome/welcome.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/schemas/product.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/schemas/product.schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/services/product.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/services/product.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/trpc/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/trpc/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api/trpc/routes/product.route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api/trpc/routes/product.route.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,20 +32,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/apps/web" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "aldngrha"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;aldngrha&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:aldngrha/mobi-trade.git",
-    "accountId": "818cc068-e407-404d-8e10-bdeb90e17c56"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:aldngrha/mobi-trade.git&quot;,
+    &quot;accountId&quot;: &quot;818cc068-e407-404d-8e10-bdeb90e17c56&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -70,7 +66,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/apps/web/app/lib/trpc",
+    "last_opened_file_path": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/apps/web/app/routes",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -81,16 +77,18 @@
     "npm.seed.executor": "Run",
     "npm.web > dev.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "ts.external.directory.path": "/Users/aldngrha/Documents/Projects/Website/Javascript/technical-test/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/apps/web/app/lib/trpc" />
       <recent name="$PROJECT_DIR$/apps/web/app/routes" />
-      <recent name="$PROJECT_DIR$/apps/web" />
+      <recent name="$PROJECT_DIR$/apps/api/trpc/routes" />
+      <recent name="$PROJECT_DIR$/apps/api/services" />
+      <recent name="$PROJECT_DIR$/apps/api/schemas" />
+      <recent name="$PROJECT_DIR$/apps/web/app/components/dialog" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/apps/web/app/pages" />
@@ -174,6 +172,10 @@
       <workItem from="1748005860366" duration="5380000" />
       <workItem from="1748012558426" duration="2571000" />
       <workItem from="1748067000342" duration="26307000" />
+      <workItem from="1748151537628" duration="768000" />
+      <workItem from="1748152311787" duration="3467000" />
+      <workItem from="1748155932965" duration="2054000" />
+      <workItem from="1748157994078" duration="19420000" />
     </task>
     <servers />
   </component>

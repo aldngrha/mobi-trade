@@ -1,10 +1,19 @@
 import { publicProcedure, router } from "../../utils/trpc";
-import { getProductBySlugSchema } from "../../schemas/product.schema";
 import {
+  getProductBySlugSchema,
+  productDeleteSchema,
+  productSchema,
+  productUpdateSchema,
+} from "../../schemas/product.schema";
+import {
+  createProduct,
+  deleteProduct,
   getAllProducts,
   getProductBySlug,
+  updateProduct,
 } from "../../services/product.service";
 import { TRPCError } from "@trpc/server";
+import { Product } from "../../types/types";
 
 export const productRouter = router({
   getAll: publicProcedure.query(async () => {
@@ -23,5 +32,36 @@ export const productRouter = router({
         });
       }
       return product;
+    }),
+
+  create: publicProcedure.input(productSchema).mutation(async ({ input }) => {
+    const created = await createProduct(input);
+    return created;
+  }),
+
+  update: publicProcedure
+    .input(productUpdateSchema)
+    .mutation(async ({ input }) => {
+      const updated = await updateProduct(input.id, input);
+      if (!updated) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Product with id "${input.id}" not found`,
+        });
+      }
+      return updated;
+    }),
+
+  delete: publicProcedure
+    .input(productDeleteSchema)
+    .mutation(async ({ input }) => {
+      const deleted = await deleteProduct(input.id);
+      if (!deleted) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Product with id "${input.id}" not found`,
+        });
+      }
+      return { success: true };
     }),
 });
