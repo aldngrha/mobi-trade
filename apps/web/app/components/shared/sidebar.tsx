@@ -27,13 +27,13 @@ const sidebarItems = [
     link: "/admin/models",
   },
   {
-    title: "Variants",
-    icon: Cpu,
-    link: "#",
-  },
-  {
     title: "Products",
     icon: Box,
+    link: "/admin/products",
+  },
+  {
+    title: "Variants",
+    icon: Cpu,
     link: "#",
   },
   {

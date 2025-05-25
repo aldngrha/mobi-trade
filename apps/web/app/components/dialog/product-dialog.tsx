@@ -11,6 +11,14 @@ import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { Plus, LoaderCircle } from "lucide-react";
 import React from "react";
+import { trpc } from "~/lib/trpc";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 type ProductDialogProps = {
   open: boolean;
@@ -37,6 +45,8 @@ export default function ProductDialog({
   resetForm,
   isLoading,
 }: ProductDialogProps) {
+  const { data, isPending } = trpc.model.models.useQuery();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -68,6 +78,34 @@ export default function ProductDialog({
                   } rounded px-2 py-1`}
                   rows={3}
                 />
+              ) : type === "select" ? (
+                <Select
+                  value={formData[id as keyof typeof formData]}
+                  onValueChange={(value) =>
+                    handleChange({
+                      target: {
+                        id: id,
+                        value,
+                      },
+                    } as React.ChangeEvent<HTMLInputElement>)
+                  }
+                >
+                  <SelectTrigger
+                    id={id}
+                    className={`border w-full rounded-md ${
+                      errors[id] ? "border-red-500" : "border-gray-300"
+                    } rounded px-2 py-1`}
+                  >
+                    <SelectValue placeholder="Choose brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {data?.map((brand) => (
+                      <SelectItem key={brand.id} value={brand.id}>
+                        {brand.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               ) : (
                 <Input
                   id={id}
@@ -131,8 +169,7 @@ export default function ProductDialog({
 const form = [
   { id: "sku", label: "SKU", type: "text", required: true },
   { id: "name", label: "Name", type: "text", required: true },
-  { id: "brand", label: "Brand", type: "text" },
-  { id: "model", label: "Model", type: "text", required: true },
+  { id: "modelId", label: "Model", type: "select", required: true },
   {
     id: "description",
     label: "Description",
@@ -153,8 +190,6 @@ const form = [
     min: 0,
     max: 100,
   },
-  { id: "condition", label: "Condition", type: "text" },
-  { id: "storage", label: "Storage", type: "text" },
   {
     id: "minimumOrderQuantity",
     label: "Minimum Order Quantity",
@@ -163,37 +198,16 @@ const form = [
     required: true,
   },
   {
-    id: "warrantyMonths",
-    label: "Warranty (Months)",
-    type: "number",
-    min: 0,
-  },
-  {
-    id: "stockQuantity",
-    label: "Stock Quantity",
-    type: "number",
-    min: 0,
-    required: true,
-  },
-  {
-    id: "reviewsCount",
-    label: "Reviews Count",
-    type: "number",
-    min: 0,
-  },
-  {
     id: "batteryHealth",
     label: "Battery Health (%)",
     type: "number",
     min: 0,
     max: 100,
   },
-  { id: "ram", label: "RAM", type: "text" },
   { id: "display", label: "Display", type: "text" },
   { id: "processor", label: "Processor", type: "text" },
   { id: "camera", label: "Camera", type: "text" },
   { id: "battery", label: "Battery", type: "text" },
   { id: "os", label: "Operating System", type: "text" },
   { id: "connectivity", label: "Connectivity", type: "text" },
-  { id: "color", label: "Color", type: "text" },
 ];

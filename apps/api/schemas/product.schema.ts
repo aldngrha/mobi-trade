@@ -8,8 +8,7 @@ export const productSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
   slug: z.string().optional(),
   name: z.string().min(1, "Name is required"),
-  brand: z.string(),
-  model: z.string().min(1, "Model is required"),
+  modelId: z.string().min(1, "Model ID is required"),
   description: z.string().min(1, "Description is required"),
   price: z
     .string()
@@ -18,21 +17,14 @@ export const productSchema = z.object({
       message: "Price must be positive",
     }),
   discount: z.number().optional().nullable(),
-  condition: z.string().optional().or(z.literal("")).nullable(),
-  storage: z.string().optional().or(z.literal("")).nullable(),
   minimumOrderQuantity: z.number(),
-  warrantyMonths: z.number().optional().nullable(),
-  stockQuantity: z.number(),
-  reviewsCount: z.number().optional().nullable(),
   batteryHealth: z.number().optional().nullable(),
-  ram: z.string().optional().or(z.literal("")).nullable(),
-  display: z.string().optional().or(z.literal("")).nullable(),
-  processor: z.string().optional().or(z.literal("")).nullable(),
-  camera: z.string().optional().or(z.literal("")).nullable(),
-  battery: z.string().optional().or(z.literal("")).nullable(),
-  os: z.string().optional().or(z.literal("")).nullable(),
-  connectivity: z.string().optional().or(z.literal("")).nullable(),
-  color: z.string().optional().or(z.literal("")).nullable(),
+  display: z.string().optional().nullable(),
+  processor: z.string().optional().nullable(),
+  camera: z.string().optional().nullable(),
+  battery: z.string().optional().nullable(),
+  os: z.string().optional().nullable(),
+  connectivity: z.string().optional().nullable(),
 });
 
 export const productUpdateSchema = productSchema.extend({

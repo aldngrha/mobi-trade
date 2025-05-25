@@ -28,8 +28,8 @@ export default function ProductTable({
           <TableHead>SKU</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Brand</TableHead>
+          <TableHead>Model</TableHead>
           <TableHead>Price</TableHead>
-          <TableHead>Stock</TableHead>
           <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
@@ -38,9 +38,9 @@ export default function ProductTable({
           <TableRow key={p.id}>
             <TableCell>{p.sku}</TableCell>
             <TableCell>{p.name}</TableCell>
-            <TableCell>{p.brand}</TableCell>
-            <TableCell>{p.price}</TableCell>
-            <TableCell>{p.stockQuantity}</TableCell>
+            <TableCell>{p.model?.brand?.name}</TableCell>
+            <TableCell>{p.model?.name}</TableCell>
+            <TableCell>${String(p.price)}</TableCell>
             <TableCell className="flex gap-2">
               <Button variant="outline" onClick={() => onEdit(p)}>
                 <Edit className="h-4 w-4" />

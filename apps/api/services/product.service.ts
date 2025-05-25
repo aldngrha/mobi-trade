@@ -1,26 +1,43 @@
 import { prisma } from "../prisma/client";
-import { Product } from "../types/types";
+import { Brand, Model, Product } from "../types/types";
 import { generateNanoid, generateUlid } from "../utils";
 
-export const getAllProducts = async () => {
+export const Products = async (): Promise<
+  (Product & { galleries: any[]; model?: Model & { brand?: Brand } })[]
+> => {
   return prisma.product.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       galleries: true,
+      model: {
+        include: {
+          brand: true,
+        },
+      },
     },
   });
 };
 
-export const getProductBySlug = async (slug: string) => {
+export const ProductBySlug = async (
+  slug: string,
+): Promise<
+  (Product & { galleries: any[]; model?: Model & { brand?: Brand } }) | null
+> => {
   return prisma.product.findUnique({
     where: { slug },
     include: {
       galleries: true,
+      model: {
+        include: {
+          brand: true,
+        },
+      },
     },
   });
 };
 
-type CreateProductInput = Omit<Product, "id">;
+// Input type tanpa ID, karena ID generate sendiri
+type CreateProductInput = Omit<Product, "id" | "slug" | "model">;
 
 export const createProduct = async (data: CreateProductInput) => {
   return prisma.product.create({
@@ -33,24 +50,30 @@ export const createProduct = async (data: CreateProductInput) => {
   });
 };
 
-type ProductUpdateInput = Partial<Product>;
+type ProductUpdateInput = Partial<Omit<Product, "slug" | "model">>;
 
 export const updateProduct = async (id: string, data: ProductUpdateInput) => {
+  const cleanedData = { ...data };
+
+  if (cleanedData.price) {
+    cleanedData.price = cleanedData.price as any;
+  }
+  if (cleanedData.discount !== undefined && cleanedData.discount !== null) {
+    cleanedData.discount = Number(cleanedData.discount);
+  }
+  if (cleanedData.minimumOrderQuantity !== undefined) {
+    cleanedData.minimumOrderQuantity = Number(cleanedData.minimumOrderQuantity);
+  }
+  if (
+    cleanedData.batteryHealth !== undefined &&
+    cleanedData.batteryHealth !== null
+  ) {
+    cleanedData.batteryHealth = Number(cleanedData.batteryHealth);
+  }
+
   return prisma.product.update({
     where: { id },
-    data: {
-      ...data,
-      discount: Number(data.discount),
-      minimumOrderQuantity: Number(data.minimumOrderQuantity),
-      warrantyMonths: data.warrantyMonths
-        ? Number(data.warrantyMonths)
-        : undefined,
-      batteryHealth: Number(data.batteryHealth),
-      storage: data.storage ? String(data.storage) : undefined,
-      stockQuantity: data.stockQuantity ? Number(data.stockQuantity) : 0,
-      rating: data.rating ? Number(data.rating) : undefined,
-      reviewsCount: data.reviewsCount ? Number(data.reviewsCount) : undefined,
-    },
+    data: cleanedData,
   });
 };
 

@@ -3,7 +3,7 @@ import { z } from "zod";
 import ProductTable from "~/components/table/product-table";
 import ProductDialog from "~/components/dialog/product-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import type { Product } from "../../../../api/types/types";
+import { type Product } from "../../../../api/types/types";
 import { productSchema } from "../../../../api/schemas/product.schema";
 import { trpc } from "~/lib/trpc";
 import { toast } from "sonner";
@@ -16,31 +16,28 @@ export default function ProductsPage() {
   const emptyForm = {
     sku: "",
     name: "",
-    brand: "",
-    model: "",
+    modelId: "",
     description: "",
     price: "",
     discount: "",
-    condition: "",
-    storage: "",
     minimumOrderQuantity: "",
-    warrantyMonths: "",
-    stockQuantity: "",
-    reviewsCount: "",
     batteryHealth: "",
-    ram: "",
     display: "",
     processor: "",
     camera: "",
     battery: "",
     os: "",
     connectivity: "",
-    color: "",
   };
   const [formData, setFormData] = useState(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const productMutation = trpc.product.create.useMutation();
+  const productMutation = editingProduct
+    ? trpc.product.update.useMutation()
+    : trpc.product.create.useMutation();
+  const deleteMutation = trpc.product.delete.useMutation();
+
+  const { data, isPending, refetch } = trpc.product.getAll.useQuery();
 
   const resetForm = () => {
     setEditingProduct(null);
@@ -61,19 +58,8 @@ export default function ProductsPage() {
 
     const preparedData = {
       ...formData,
-      discount: formData.discount ? Number(formData.discount) : null,
-      minimumOrderQuantity: formData.minimumOrderQuantity
-        ? Number(formData.minimumOrderQuantity)
-        : null,
-      warrantyMonths: formData.warrantyMonths
-        ? Number(formData.warrantyMonths)
-        : null,
-      stockQuantity: formData.stockQuantity
-        ? Number(formData.stockQuantity)
-        : null,
-      reviewsCount: formData.reviewsCount
-        ? Number(formData.reviewsCount)
-        : null,
+      discount: Number(formData.discount),
+      minimumOrderQuantity: Number(formData.minimumOrderQuantity),
       batteryHealth: formData.batteryHealth
         ? Number(formData.batteryHealth)
         : null,
@@ -100,15 +86,23 @@ export default function ProductsPage() {
         id: editingProduct.id,
       };
 
-      setProducts((prev) =>
-        prev.map((p) => (p.id === editingProduct.id ? updatedProduct : p)),
-      );
-      setIsDialogOpen(false);
-      resetForm();
+      productMutation.mutate(updatedProduct, {
+        onSuccess: (data) => {
+          setProducts((prev) => prev.map((p) => (p.id === data.id ? data : p)));
+          setIsDialogOpen(false);
+          resetForm();
+          refetch();
+          toast.success("Product updated successfully!");
+        },
+        onError: (error) => {
+          toast.error(`Error updating product: ${error.message}`);
+        },
+      });
     } else {
       const newProduct: Product = {
         ...validated,
-        id: "", // backend akan generate ID-nya
+        id: "",
+        price: String(validated.price),
       };
 
       productMutation.mutate(newProduct, {
@@ -116,6 +110,7 @@ export default function ProductsPage() {
           setProducts((prev) => [...prev, data]);
           setIsDialogOpen(false);
           resetForm();
+          refetch();
           toast.success("Product created successfully!");
         },
         onError: (error) => {
@@ -130,33 +125,37 @@ export default function ProductsPage() {
     setFormData({
       sku: product.sku,
       name: product.name,
-      brand: product.brand || "",
-      model: product.model,
+      modelId: product.modelId,
       description: product.description,
-      price: product.price.toString(),
+      price: String(product.price),
       discount: product.discount?.toString() || "",
-      condition: product.condition || "",
-      storage: String(product.storage) || "",
-      minimumOrderQuantity: product.minimumOrderQuantity.toString(),
-      warrantyMonths: product.warrantyMonths?.toString() || "",
-      stockQuantity: product.stockQuantity?.toString() || "",
-      reviewsCount: product.reviewsCount?.toString() || "",
+      minimumOrderQuantity: product.minimumOrderQuantity.toString() || "",
       batteryHealth: product.batteryHealth?.toString() || "",
-      ram: product.ram || "",
       display: product.display || "",
       processor: product.processor || "",
       camera: product.camera || "",
       battery: product.battery || "",
       os: product.os || "",
       connectivity: product.connectivity || "",
-      color: product.color || "",
     });
     setIsDialogOpen(true);
     setErrors({});
   };
 
   const handleDelete = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    deleteMutation.mutate(
+      { id },
+      {
+        onSuccess: () => {
+          setProducts((prev) => prev.filter((b) => b.id !== id));
+          refetch();
+          toast.success("Product deleted successfully!");
+        },
+        onError: (error) => {
+          toast.error(`Error deleting product: ${error.message}`);
+        },
+      },
+    );
   };
 
   return (
@@ -180,11 +179,16 @@ export default function ProductsPage() {
           <CardTitle>Product List</CardTitle>
         </CardHeader>
         <CardContent>
-          <ProductTable
-            products={products}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+          {data && (
+            <ProductTable
+              products={data.map((item) => ({
+                ...item,
+                price: item.price != null ? String(item.price) : "0",
+              }))}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
