@@ -9,6 +9,7 @@ import {
   createProduct,
   deleteProduct,
   ProductBySlug,
+  productForLandingPage,
   Products,
   updateProduct,
 } from "../../services/product.service";
@@ -18,6 +19,11 @@ import { Product } from "../../types/types";
 export const productRouter = router({
   getAll: publicProcedure.query(async (): Promise<Product[]> => {
     const products = await Products();
+    return products;
+  }),
+
+  productLandingPage: publicProcedure.query(async () => {
+    const products = await productForLandingPage();
     return products;
   }),
 

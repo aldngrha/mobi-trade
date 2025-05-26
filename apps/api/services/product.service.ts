@@ -1,5 +1,5 @@
 import { prisma } from "../prisma/client";
-import { Brand, Model, Product } from "../types/types";
+import { Brand, Gallery, Model, Product, Variant } from "../types/types";
 import { generateNanoid, generateUlid } from "../utils";
 
 export const Products = async (): Promise<
@@ -14,6 +14,7 @@ export const Products = async (): Promise<
           brand: true,
         },
       },
+      variants: true,
     },
   });
 };
@@ -21,7 +22,12 @@ export const Products = async (): Promise<
 export const ProductBySlug = async (
   slug: string,
 ): Promise<
-  (Product & { galleries: any[]; model?: Model & { brand?: Brand } }) | null
+  | (Product & {
+      galleries: Gallery[];
+      model: Model & { brand: Brand };
+      variants: Variant[];
+    })
+  | null
 > => {
   return prisma.product.findUnique({
     where: { slug },
@@ -32,6 +38,7 @@ export const ProductBySlug = async (
           brand: true,
         },
       },
+      variants: true,
     },
   });
 };
@@ -78,4 +85,23 @@ export const deleteProduct = async (id: string) => {
   return prisma.product.delete({
     where: { id },
   });
+};
+
+export const productForLandingPage = async () => {
+  const products = await prisma.product.findMany({
+    include: {
+      galleries: { take: 1 },
+      variants: { take: 1, orderBy: { price: "asc" } },
+      model: {
+        include: {
+          brand: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return products;
 };
