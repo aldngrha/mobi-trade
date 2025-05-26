@@ -34,12 +34,12 @@ const sidebarItems = [
   {
     title: "Variants",
     icon: Cpu,
-    link: "#",
+    link: "/admin/variants",
   },
   {
     title: "Galleries",
     icon: Images,
-    link: "#",
+    link: "/admin/galleries",
   },
   {
     title: "Transactions",

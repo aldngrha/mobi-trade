@@ -10,12 +10,6 @@ export const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
   modelId: z.string().min(1, "Model ID is required"),
   description: z.string().min(1, "Description is required"),
-  price: z
-    .string()
-    .regex(/^\d+(\.\d{1,2})?$/, "Price must be a number with up to 2 decimals")
-    .refine((val) => parseFloat(val) > 0, {
-      message: "Price must be positive",
-    }),
   discount: z.number().optional().nullable(),
   minimumOrderQuantity: z.number(),
   batteryHealth: z.number().optional().nullable(),

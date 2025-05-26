@@ -18,7 +18,6 @@ export default function ProductsPage() {
     name: "",
     modelId: "",
     description: "",
-    price: "",
     discount: "",
     minimumOrderQuantity: "",
     batteryHealth: "",
@@ -102,7 +101,6 @@ export default function ProductsPage() {
       const newProduct: Product = {
         ...validated,
         id: "",
-        price: String(validated.price),
       };
 
       productMutation.mutate(newProduct, {
@@ -127,7 +125,6 @@ export default function ProductsPage() {
       name: product.name,
       modelId: product.modelId,
       description: product.description,
-      price: String(product.price),
       discount: product.discount?.toString() || "",
       minimumOrderQuantity: product.minimumOrderQuantity.toString() || "",
       batteryHealth: product.batteryHealth?.toString() || "",
@@ -181,10 +178,7 @@ export default function ProductsPage() {
         <CardContent>
           {data && (
             <ProductTable
-              products={data.map((item) => ({
-                ...item,
-                price: item.price != null ? String(item.price) : "0",
-              }))}
+              products={data}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />

@@ -13,6 +13,8 @@ export default [
       { path: "products", file: "routes/product-admin.tsx" },
       { path: "brand-categories", file: "routes/brand-category.tsx" },
       { path: "models", file: "routes/models.tsx" },
+      { path: "variants", file: "routes/variants.tsx" },
+      { path: "galleries", file: "routes/galleries.tsx" },
     ],
   },
   { path: "/checkout/success", file: "routes/success.tsx" },

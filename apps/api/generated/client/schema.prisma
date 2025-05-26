@@ -45,7 +45,6 @@ model Product {
   slug                 String            @unique
   name                 String
   description          String
-  price                Decimal           @db.Decimal(10, 2)
   discount             Int?
   minimumOrderQuantity Int
   batteryHealth        Int?

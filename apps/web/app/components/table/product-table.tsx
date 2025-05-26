@@ -29,7 +29,6 @@ export default function ProductTable({
           <TableHead>Name</TableHead>
           <TableHead>Brand</TableHead>
           <TableHead>Model</TableHead>
-          <TableHead>Price</TableHead>
           <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
@@ -40,7 +39,6 @@ export default function ProductTable({
             <TableCell>{p.name}</TableCell>
             <TableCell>{p.model?.brand?.name}</TableCell>
             <TableCell>{p.model?.name}</TableCell>
-            <TableCell>${String(p.price)}</TableCell>
             <TableCell className="flex gap-2">
               <Button variant="outline" onClick={() => onEdit(p)}>
                 <Edit className="h-4 w-4" />

@@ -4,6 +4,8 @@ import { productRouter } from "./routes/product.route";
 import { checkoutRouter } from "./routes/checkout.route";
 import { brandRouter } from "./routes/brand.route";
 import { modelRouter } from "./routes/model.route";
+import { variantRouter } from "./routes/variant.route";
+import { galleryRouter } from "./routes/gallery.route";
 
 export const appRouter = router({
   auth: authRouter,
@@ -11,6 +13,8 @@ export const appRouter = router({
   checkout: checkoutRouter,
   brand: brandRouter,
   model: modelRouter,
+  variant: variantRouter,
+  gallery: galleryRouter,
 });
 
 export type AppRouter = typeof appRouter;

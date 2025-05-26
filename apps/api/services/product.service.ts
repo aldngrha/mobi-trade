@@ -55,9 +55,6 @@ type ProductUpdateInput = Partial<Omit<Product, "slug" | "model">>;
 export const updateProduct = async (id: string, data: ProductUpdateInput) => {
   const cleanedData = { ...data };
 
-  if (cleanedData.price) {
-    cleanedData.price = cleanedData.price as any;
-  }
   if (cleanedData.discount !== undefined && cleanedData.discount !== null) {
     cleanedData.discount = Number(cleanedData.discount);
   }

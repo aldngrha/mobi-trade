@@ -8,10 +8,8 @@ import {
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Textarea } from "~/components/ui/textarea";
 import { Plus, LoaderCircle } from "lucide-react";
 import React from "react";
-import { trpc } from "~/lib/trpc";
 import {
   Select,
   SelectContent,
@@ -19,8 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { trpc } from "~/lib/trpc";
+import { Textarea } from "~/components/ui/textarea";
 
-type ProductDialogProps = {
+type VariantDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -34,7 +34,7 @@ type ProductDialogProps = {
   isLoading: boolean;
 };
 
-export default function ProductDialog({
+export default function VariantDialog({
   open,
   onOpenChange,
   onSubmit,
@@ -44,15 +44,15 @@ export default function ProductDialog({
   isEditing,
   resetForm,
   isLoading,
-}: ProductDialogProps) {
-  const { data, isPending } = trpc.model.models.useQuery();
+}: VariantDialogProps) {
+  const { data } = trpc.product.getAll.useQuery();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button onClick={resetForm} className="cursor-pointer">
           <Plus className="h-4 w-4 mr-2" />
-          Add Produk
+          Add Variant
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-5xl overflow-auto max-h-[90vh]">
@@ -62,7 +62,7 @@ export default function ProductDialog({
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-4 py-4">
-          {form.map(({ id, label, type, required, min, max }) => (
+          {form.map(({ id, label, type, required, min }) => (
             <div key={id} className="flex flex-col">
               <Label htmlFor={id} className="mb-3 font-semibold">
                 {label}
@@ -96,12 +96,12 @@ export default function ProductDialog({
                       errors[id] ? "border-red-500" : "border-gray-300"
                     } rounded px-2 py-1`}
                   >
-                    <SelectValue placeholder="Choose brand" />
+                    <SelectValue placeholder="Choose variant" />
                   </SelectTrigger>
                   <SelectContent>
-                    {data?.map((brand) => (
-                      <SelectItem key={brand.id} value={brand.id}>
-                        {brand.name}
+                    {data?.map((variant) => (
+                      <SelectItem key={variant.id} value={variant.id}>
+                        {variant.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -113,7 +113,6 @@ export default function ProductDialog({
                   value={formData[id as keyof typeof formData]}
                   onChange={handleChange}
                   min={min}
-                  max={max}
                   className={`border ${
                     errors[id] ? "border-red-500" : "border-gray-300"
                   } rounded px-2 py-1`}
@@ -124,20 +123,6 @@ export default function ProductDialog({
               )}
             </div>
           ))}
-          <div className="grid gap-2">
-            <Label htmlFor="description mb-3">
-              Description
-              <span className="text-red-500 ml-1">*</span>
-            </Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-            {errors["description"] && (
-              <p className="text-sm text-red-500">{errors["description"]}</p>
-            )}
-          </div>
           <div className="flex justify-end gap-2 mt-4">
             <Button
               variant="outline"
@@ -166,40 +151,50 @@ export default function ProductDialog({
 }
 
 const form = [
-  { id: "sku", label: "SKU", type: "text", required: true },
-  { id: "name", label: "Name", type: "text", required: true },
-  { id: "modelId", label: "Model", type: "select", required: true },
   {
-    id: "description",
-    label: "Description",
-    type: "textarea",
+    id: "productId",
+    label: "Product",
+    type: "select",
     required: true,
   },
   {
-    id: "discount",
-    label: "Discount (%)",
+    id: "storage",
+    label: "Storage",
     type: "number",
-    min: 0,
-    max: 100,
   },
   {
-    id: "minimumOrderQuantity",
-    label: "Minimum Order Quantity",
+    id: "ram",
+    label: "RAM",
     type: "number",
-    min: 1,
+  },
+  {
+    id: "color",
+    label: "Color",
+    type: "text",
+  },
+  {
+    id: "condition",
+    label: "Condition",
+    type: "text",
+  },
+  {
+    id: "price",
+    label: "Price",
+    type: "number",
     required: true,
+    min: 0,
   },
   {
-    id: "batteryHealth",
-    label: "Battery Health (%)",
+    id: "stockQuantity",
+    label: "Stock Quantity",
+    type: "number",
+    required: true,
+    min: 0,
+  },
+  {
+    id: "warrantyMonths",
+    label: "Warranty (Months)",
     type: "number",
     min: 0,
-    max: 100,
   },
-  { id: "display", label: "Display", type: "text" },
-  { id: "processor", label: "Processor", type: "text" },
-  { id: "camera", label: "Camera", type: "text" },
-  { id: "battery", label: "Battery", type: "text" },
-  { id: "os", label: "Operating System", type: "text" },
-  { id: "connectivity", label: "Connectivity", type: "text" },
 ];
