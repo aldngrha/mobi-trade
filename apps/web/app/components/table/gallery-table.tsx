@@ -28,7 +28,7 @@ export default function GalleryTable({
           <TableHead>No</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Image</TableHead>
-          <TableHead className="text-end">Aksi</TableHead>
+          <TableHead className="text-end">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

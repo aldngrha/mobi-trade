@@ -44,7 +44,7 @@ const sidebarItems = [
   {
     title: "Transactions",
     icon: ChartLine,
-    link: "#",
+    link: "/admin/transactions",
   },
 ];
 

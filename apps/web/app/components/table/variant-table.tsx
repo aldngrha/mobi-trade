@@ -34,7 +34,7 @@ export default function VariantTable({
           <TableHead>Stock</TableHead>
           <TableHead>Storage (GB)</TableHead>
           <TableHead>Warranty (Months)</TableHead>
-          <TableHead className="text-end">Aksi</TableHead>
+          <TableHead className="text-end">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

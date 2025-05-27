@@ -27,7 +27,7 @@ export default function BrandTable({
         <TableRow>
           <TableHead>No</TableHead>
           <TableHead>Name</TableHead>
-          <TableHead className="text-end">Aksi</TableHead>
+          <TableHead className="text-end">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

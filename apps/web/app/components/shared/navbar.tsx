@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Search, ShoppingCart, User } from "lucide-react";
-import { Badge } from "~/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useCart } from "~/context/cart-context";
 import { useAuth } from "~/context/auth-context";
+import { trpc } from "~/lib/trpc";
 
 interface NavbarProps {
   onlyLogo: boolean;
@@ -24,7 +24,21 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { cartItems, clearCart } = useCart();
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const { data: products } = trpc.product.productLandingPage.useQuery();
   const { signOut } = useAuth();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState<typeof products>([]);
+
+  useEffect(() => {
+    if (products && searchTerm.trim() !== "") {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
+    }
+  }, [searchTerm, products]);
 
   // Trigger animasi saat cartCount > 0 dan berubah
   useEffect(() => {
@@ -77,9 +91,30 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
                   type="search"
                   placeholder="Search phones..."
                   className="pr-12"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                {searchTerm && (
+                  <div className="absolute top-full mt-1 w-full bg-white shadow-md border rounded z-50 max-h-60 overflow-auto">
+                    {filteredProducts && filteredProducts.length > 0 ? (
+                      filteredProducts.map((product) => (
+                        <Link
+                          to={`/product/${product.slug}`}
+                          key={product.id}
+                          className="block px-4 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                          onClick={() => setSearchTerm("")}
+                        >
+                          {product.name}
+                        </Link>
+                      ))
+                    ) : (
+                      <p className="px-4 py-2 text-sm text-gray-500">
+                        No product found
+                      </p>
+                    )}
+                  </div>
+                )}
                 <Button
-                  type="submit"
                   size="icon"
                   variant="ghost"
                   className="absolute right-0 top-0 h-full"

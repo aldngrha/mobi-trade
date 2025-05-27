@@ -1,23 +1,17 @@
 import { Outlet, useNavigate } from "react-router";
-import { useAuth } from "~/context/auth-context";
+import { AuthProvider, useAuth } from "~/context/auth-context";
 import { useEffect, useState } from "react";
 import Sidebar from "~/components/shared/sidebar";
+import { ProtectedRoute } from "~/components/shared/protected-route";
 
 export default function AdminLayout() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) return;
-
-    if (user.role !== "ADMIN") {
-      navigate("/sign-in");
-    }
-  }, [user, navigate]);
-
   return (
-    <Sidebar>
-      <Outlet />
-    </Sidebar>
+    <AuthProvider>
+      <ProtectedRoute>
+        <Sidebar>
+          <Outlet />
+        </Sidebar>
+      </ProtectedRoute>
+    </AuthProvider>
   );
 }

@@ -1,7 +1,4 @@
-import { Link } from "react-router";
 import { Button } from "~/components/ui/button";
-import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
   Select,
@@ -10,15 +7,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-// import { products } from "~/lib/data";
 import Navbar from "~/components/shared/navbar";
 import Footer from "~/components/shared/footer";
 import CardProduct from "~/components/shared/card-product";
 import { ProtectedRoute } from "~/components/shared/protected-route";
 import { trpc } from "~/lib/trpc";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { LoaderCircle } from "lucide-react";
 
 export default function LandingPage() {
-  const { data: products, isLoading, error } = trpc.product.getAll.useQuery();
+  const [sortOption, setSortOption] = useState("newest");
+  const [brandFilter, setBrandFilter] = useState("all");
+  const [tabFilter, setTabFilter] = useState("all");
+  const { data: products } = trpc.product.productLandingPage.useQuery();
+  const initialVisibleCount = 8;
+  const [visibleCount, setVisibleCount] = useState(
+    products && products.length < initialVisibleCount
+      ? products.length
+      : initialVisibleCount,
+  );
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const { data: brands } = trpc.brand.brandCategories.useQuery();
 
   const scrollToFeatured = () => {
     const element = document.getElementById("featured-products");
@@ -26,6 +36,89 @@ export default function LandingPage() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = products;
+
+    // Filter by brand
+    if (brandFilter !== "all") {
+      filtered = filtered?.filter(
+        (p) => p.model.brand.name.toLowerCase() === brandFilter.toLowerCase(),
+      );
+    }
+
+    // Filter by tab category (price)
+    filtered = filtered?.filter((product) => {
+      const price = Number(product.variants[0].price);
+      switch (tabFilter) {
+        case "premium":
+          return price > 500;
+        case "mid-range":
+          return price >= 300 && price <= 500;
+        case "budget":
+          return price < 300;
+        default:
+          return true;
+      }
+    });
+
+    // Sort by option
+    filtered?.sort((a, b) => {
+      switch (sortOption) {
+        case "newest":
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        case "oldest":
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        case "price-low":
+          return Number(a.variants[0].price) - Number(b.variants[0].price);
+        case "price-high":
+          return Number(b.variants[0].price) - Number(a.variants[0].price);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [products, brandFilter, tabFilter, sortOption]);
+
+  useEffect(() => {
+    if (visibleCount >= (filteredAndSortedProducts?.length || 0)) return;
+
+    let timer: NodeJS.Timeout;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          timer = setTimeout(() => {
+            setVisibleCount((prev) =>
+              Math.min(prev + 8, filteredAndSortedProducts?.length || 0),
+            );
+          }, 1200);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      },
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+      if (timer) clearTimeout(timer);
+    };
+  }, [visibleCount, filteredAndSortedProducts]);
 
   return (
     <ProtectedRoute>
@@ -70,82 +163,71 @@ export default function LandingPage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">Sort by:</span>
-                    <Select defaultValue="newest">
+                    <Select defaultValue="newest" onValueChange={setSortOption}>
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Sort by" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="newest">Newest First</SelectItem>
+                        <SelectItem value="oldest">Oldest First</SelectItem>
                         <SelectItem value="price-low">
                           Price: Low to High
                         </SelectItem>
                         <SelectItem value="price-high">
                           Price: High to Low
                         </SelectItem>
-                        <SelectItem value="popular">Most Popular</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">Filter:</span>
-                    <Select defaultValue="all">
+                    <Select defaultValue="all" onValueChange={setBrandFilter}>
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Filter by" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Brands</SelectItem>
-                        <SelectItem value="apple">Apple</SelectItem>
-                        <SelectItem value="samsung">Samsung</SelectItem>
-                        <SelectItem value="google">Google</SelectItem>
-                        <SelectItem value="xiaomi">Xiaomi</SelectItem>
+                        {brands?.map((brand) => (
+                          <SelectItem
+                            key={brand.id}
+                            value={brand.name.toLowerCase()}
+                          >
+                            {brand.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
               </div>
-              <Tabs defaultValue="all" className="mb-8">
+              <Tabs
+                defaultValue="all"
+                className="mb-8"
+                onValueChange={setTabFilter}
+              >
                 <TabsList>
                   <TabsTrigger value="all">All Phones</TabsTrigger>
                   <TabsTrigger value="premium">Premium</TabsTrigger>
                   <TabsTrigger value="mid-range">Mid-Range</TabsTrigger>
                   <TabsTrigger value="budget">Budget</TabsTrigger>
                 </TabsList>
-                <TabsContent value="all" className="mt-6">
+
+                <TabsContent value={tabFilter} className="mt-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products?.map((product) => (
-                      <CardProduct key={product.id} product={product} />
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value="premium" className="mt-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products
-                      ?.filter((product) => Number(product.price) > 500)
+                    {filteredAndSortedProducts
+                      ?.slice(0, visibleCount)
                       .map((product) => (
                         <CardProduct key={product.id} product={product} />
                       ))}
                   </div>
-                </TabsContent>
-                <TabsContent value="mid-range" className="mt-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products
-                      ?.filter(
-                        (product) =>
-                          Number(product.price) >= 300 &&
-                          Number(product.price) <= 500,
-                      )
-                      .map((product) => (
-                        <CardProduct key={product.id} product={product} />
-                      ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value="budget" className="mt-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products
-                      ?.filter((product) => Number(product.price) < 300)
-                      .map((product) => (
-                        <CardProduct key={product.id} product={product} />
-                      ))}
+                  <div
+                    ref={loaderRef}
+                    className="h-10 mt-4 flex justify-center items-center"
+                  >
+                    {filteredAndSortedProducts &&
+                      visibleCount < filteredAndSortedProducts?.length && (
+                        <LoaderCircle className="animate-spin text-slate-400" />
+                      )}
                   </div>
                 </TabsContent>
               </Tabs>

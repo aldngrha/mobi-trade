@@ -29,7 +29,7 @@ export default function ProductTable({
           <TableHead>Name</TableHead>
           <TableHead>Brand</TableHead>
           <TableHead>Model</TableHead>
-          <TableHead>Aksi</TableHead>
+          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

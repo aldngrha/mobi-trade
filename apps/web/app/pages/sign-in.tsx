@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
@@ -41,18 +41,26 @@ export default function SignInPage() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof SignInData, string>>
   >({});
-  const { setToken } = useAuth();
+  const { setToken, user } = useAuth();
 
   const signInMutation = trpc.auth.login.useMutation({
     onSuccess: ({ token }) => {
       setToken(token);
       toast.success("Login success!");
-      navigate("/");
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.role === "ADMIN") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

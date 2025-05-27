@@ -13,6 +13,7 @@ import { useCart } from "~/context/cart-context";
 
 export default function ProductPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
@@ -33,18 +34,32 @@ export default function ProductPage() {
     slug: productSlug,
   });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState(
+    product?.variants?.[0] || null,
+  );
+
+  console.log(product);
+
+  useEffect(() => {
+    if (product?.variants?.length) {
+      setSelectedVariant(product.variants[0]);
+    }
+  }, [product?.variants]);
 
   const handleAddToCart = () => {
-    if (!product) return;
+    if (!product || !selectedVariant) return;
 
     addToCart({
       id: product.id,
       name: product.name,
-      image: product.galleries?.[0] || "/placeholder.svg",
-      price: product.price || 0,
+      image: {
+        id: product.galleries[0]?.id || "placeholder",
+        imageUrl: product.galleries[0]?.imageUrl || "/placeholder.svg",
+      },
+      price: Number(selectedVariant.price) || 0,
       quantity: 1,
-      storage: product.storage,
-      condition: product.condition,
+      storage: selectedVariant?.storage || "",
+      condition: selectedVariant?.condition || "",
     });
   };
 
@@ -77,7 +92,7 @@ export default function ProductPage() {
     );
   }
 
-  const price = Number(product.price);
+  const price = Number(selectedVariant?.price);
 
   // Calculate original price if there's a discount
   const originalPrice =
@@ -107,7 +122,7 @@ export default function ProductPage() {
                   alt={product.name}
                   className="object-cover w-full h-full"
                 />
-                {product.condition === "Like New" && (
+                {selectedVariant?.condition === "Like New" && (
                   <Badge className="absolute top-4 right-4 bg-green-500 hover:bg-green-600">
                     Like New
                   </Badge>
@@ -147,22 +162,13 @@ export default function ProductPage() {
               <div>
                 <h1 className="text-3xl font-bold">{product.name}</h1>
                 <div className="mt-2 flex items-center gap-4">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${i < (product.rating ?? 0) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
-                      />
-                    ))}
-                    <span className="ml-2 text-sm text-muted-foreground">
-                      ({product.reviewsCount} reviews)
-                    </span>
-                  </div>
-                  <Badge variant="outline">{product.brand}</Badge>
+                  <Badge variant="outline">{product.model.brand.name}</Badge>
                 </div>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">${product.price}</span>
+                <span className="text-3xl font-bold">
+                  ${Number(selectedVariant?.price).toFixed(2)}
+                </span>
                 {originalPrice && (
                   <span className="text-lg text-muted-foreground line-through">
                     ${originalPrice}
@@ -173,31 +179,65 @@ export default function ProductPage() {
                 )}
               </div>
               <Separator />
+              {product.variants?.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-lg">Choose Variant</h3>
+                  <div className="flex gap-4 flex-wrap">
+                    {product.variants.map((variant) => {
+                      const isSelected = selectedVariant?.id === variant.id;
+                      return (
+                        <div
+                          key={variant.id}
+                          onClick={() => setSelectedVariant(variant)}
+                          className={`cursor-pointer w-fit transition-all ease-in-out duration-300 rounded-lg border p-2 text-xs ${
+                            isSelected
+                              ? " bg-slate-200 border-slate-700"
+                              : "hover:border-muted-foreground/40"
+                          }`}
+                        >
+                          <p>
+                            {variant.ram} / {variant.storage} -{" "}
+                            <span className="text-muted-foreground">
+                              {variant.color}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">
                       Condition
                     </span>
-                    <div className="font-medium">{product.condition}</div>
+                    <div className="font-medium">
+                      {selectedVariant?.condition}
+                    </div>
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">
                       Storage
                     </span>
-                    <div className="font-medium">{product.storage}</div>
+                    <div className="font-medium">
+                      {selectedVariant?.storage}
+                    </div>
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">
                       Color
                     </span>
-                    <div className="font-medium">{product.color}</div>
+                    <div className="font-medium">{selectedVariant?.color}</div>
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">
                       Warranty
                     </span>
-                    <div className="font-medium">{product.warrantyMonths}</div>
+                    <div className="font-medium">
+                      {selectedVariant?.warrantyMonths}
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-1">
@@ -206,7 +246,7 @@ export default function ProductPage() {
                   </span>
                   <div className="flex items-center gap-2 font-medium">
                     <Check className="h-4 w-4 text-green-500" />
-                    In Stock ({product.stockQuantity} available)
+                    In Stock ({selectedVariant?.stockQuantity} available)
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -263,19 +303,19 @@ export default function ProductPage() {
                     <div className="space-y-3">
                       <div className="grid grid-cols-2 gap-1">
                         <span className="font-medium">Brand</span>
-                        <span>{product.brand}</span>
+                        <span>{product.model.brand.name}</span>
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         <span className="font-medium">Model</span>
-                        <span>{product.model}</span>
+                        <span>{product.model.name}</span>
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         <span className="font-medium">Storage</span>
-                        <span>{product.storage}</span>
+                        <span>{selectedVariant?.storage}</span>
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         <span className="font-medium">RAM</span>
-                        <span>{product.ram}</span>
+                        <span>{selectedVariant?.ram}</span>
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         <span className="font-medium">Display</span>

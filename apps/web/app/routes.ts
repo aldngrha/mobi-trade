@@ -15,9 +15,11 @@ export default [
       { path: "models", file: "routes/models.tsx" },
       { path: "variants", file: "routes/variants.tsx" },
       { path: "galleries", file: "routes/galleries.tsx" },
+      { path: "transactions", file: "routes/transactions.tsx" },
+      { path: "transaction/:transactionId", file: "routes/$transactionId.tsx" },
     ],
   },
   { path: "/checkout/success", file: "routes/success.tsx" },
-  { path: "/products/:productSlug", file: "routes/$productSlug.tsx" },
+  { path: "/product/:productSlug", file: "routes/$productSlug.tsx" },
   { path: "*", file: "routes/not-found.tsx" },
 ] satisfies RouteConfig;

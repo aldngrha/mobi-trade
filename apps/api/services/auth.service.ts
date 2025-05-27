@@ -2,6 +2,7 @@ import { prisma } from "../prisma/client";
 import bcrypt from "bcryptjs";
 import { signJWT } from "../utils/jwt";
 import { TRPCError } from "@trpc/server";
+import { generateUlid } from "../utils";
 
 export const registerUser = async (
   name: string,
@@ -11,7 +12,7 @@ export const registerUser = async (
 ) => {
   const hashed = await bcrypt.hash(password, 10);
   return prisma.user.create({
-    data: { name, email, password: hashed, role },
+    data: { id: generateUlid(), name, email, password: hashed, role },
   });
 };
 

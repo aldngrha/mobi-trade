@@ -16,7 +16,7 @@ import type {
   CheckoutInput,
   CheckoutItem,
   ShippingAddressInput,
-} from "../../../api/services/checkout.service";
+} from "../../../api/services/transaction.service";
 import { useCheckout } from "~/hooks/useCheckout";
 import { useAuth } from "~/context/auth-context";
 

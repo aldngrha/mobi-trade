@@ -5,19 +5,23 @@ import { useAuth } from "~/context/auth-context";
 export function ProtectedRoute({ children }: { children: JSX.Element }) {
   if (typeof window === "undefined") return null;
 
-  const { token, isInitialized } = useAuth();
+  const { token, user, isInitialized } = useAuth();
   const location = useLocation();
 
-  const isOpenPath =
-    location.pathname === "/" || location.pathname.startsWith("/products");
+  const path = location.pathname;
 
-  if (!isInitialized) {
-    // opsional: bisa kasih loading spinner atau null
-    return null;
-  }
+  const isOpenPath = path === "/" || path.startsWith("/products");
+
+  const isAdminPath = path.startsWith("/admin");
+
+  if (!isInitialized) return null;
 
   if (!token && !isOpenPath) {
     return <Navigate to="/sign-in" replace />;
+  }
+
+  if (user?.role === "USER" && isAdminPath) {
+    return <Navigate to="/" replace />;
   }
 
   return children;

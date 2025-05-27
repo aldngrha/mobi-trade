@@ -28,7 +28,7 @@ export default function ModelTable({
           <TableHead>No</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Brand Name</TableHead>
-          <TableHead className="text-end">Aksi</TableHead>
+          <TableHead className="text-end">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

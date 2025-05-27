@@ -26,3 +26,19 @@ export const checkoutInputSchema = z.object({
     }),
   ),
 });
+
+export const updateTransactionStatusSchema = z.object({
+  transactionId: z.string().min(1),
+  status: z.enum([
+    "PENDING",
+    "PAID",
+    "APPROVED",
+    "REJECTED",
+    "SHIPPED",
+    "DELIVERED",
+  ]),
+});
+
+export const transactionDetail = z.object({
+  id: z.string(),
+});

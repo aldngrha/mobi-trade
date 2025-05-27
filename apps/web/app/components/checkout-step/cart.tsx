@@ -9,7 +9,7 @@ import { Button } from "~/components/ui/button";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { type CartItem } from "~/context/cart-context";
 import { useNavigate } from "react-router";
-import type { CheckoutItem } from "../../../../api/services/checkout.service";
+import type { CheckoutItem } from "../../../../api/services/transaction.service";
 
 type CartStep = {
   cartItems: CartItem[];

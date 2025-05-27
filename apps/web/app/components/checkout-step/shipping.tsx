@@ -13,7 +13,7 @@ import { Button } from "~/components/ui/button";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { Textarea } from "~/components/ui/textarea";
 import { z } from "zod";
-import type { ShippingAddressInput } from "../../../../api/services/checkout.service";
+import type { ShippingAddressInput } from "../../../../api/services/transaction.service";
 
 type ShippingStepProps = {
   setStep: Dispatch<SetStateAction<Step>>;
