@@ -7,11 +7,11 @@ export const trpc = createTRPCReact<AppRouter>();
 export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "http://localhost:3000/trpc",
+      url: `${import.meta.env.VITE_API_URL}/trpc`,
       fetch(url, options) {
         return fetch(url, {
           ...options,
-          credentials: "include", // biar cookie keikut kalau pakai JWT via cookie
+          credentials: "include",
         });
       },
     }),

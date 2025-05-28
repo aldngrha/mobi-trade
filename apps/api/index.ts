@@ -9,7 +9,7 @@ const app = new Hono();
 app.use(
   "/trpc/*",
   cors({
-    origin: "http://localhost:5173", // frontend dev server kamu
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );

@@ -12,5 +12,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  api:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./apps/api/.env
+    environment:
+      DATABASE_URL: postgresql://aldngrha:mysecretpassword@postgres:5432/mydb
+      JWT_SECRET: supersecretkey
+    depends_on:
+      - postgres
 volumes:
   pgdata:

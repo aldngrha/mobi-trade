@@ -1,5 +1,5 @@
 {
-  "name": "monorepo-mobi-trade",
+  "name": "monorepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@hono/trpc-server": "^0.3.4",
     "@prisma/client": "^6.8.2",
+    "@supabase/supabase-js": "^2.49.8",
     "@trpc/server": "^11.1.2",
     "bcryptjs": "^3.0.2",
     "hono": "^4.7.10",

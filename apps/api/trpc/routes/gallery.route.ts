@@ -14,7 +14,7 @@ import {
   gallerySchemaInput,
   galleryUpdateSchema,
 } from "../../schemas/gallery.schema";
-import { saveImageToDisk } from "../../utils/upload";
+import { saveImageToSupabase } from "../../utils/upload";
 import { z } from "zod";
 
 export const galleryRouter = router({
@@ -43,11 +43,12 @@ export const galleryRouter = router({
       // save image dulu
       let imageUrl: string;
       try {
-        imageUrl = await saveImageToDisk(input.file, input.fileName);
+        imageUrl = await saveImageToSupabase(input.file, input.fileName);
       } catch (error) {
+        console.error("Upload error:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to save image to disk",
+          message: `Failed to save image to storage: ${error instanceof Error ? error.message : "unknown error"}`,
         });
       }
 
@@ -86,7 +87,7 @@ export const galleryRouter = router({
       };
 
       if (file && fileName) {
-        const savedImageUrl = await saveImageToDisk(file, fileName);
+        const savedImageUrl = await saveImageToSupabase(file, fileName);
         updateData.imageUrl = savedImageUrl;
       } else if (imageUrl) {
         updateData.imageUrl = imageUrl;
@@ -115,19 +116,5 @@ export const galleryRouter = router({
         });
       }
       return { success: true };
-    }),
-
-  uploadImage: publicProcedure
-    .input(fileUploadSchema)
-    .mutation(async ({ input }) => {
-      try {
-        const imageUrl = await saveImageToDisk(input.file, input.fileName);
-        return { url: imageUrl };
-      } catch (err) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to save image",
-        });
-      }
     }),
 });

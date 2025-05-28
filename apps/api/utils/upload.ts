@@ -1,26 +1,43 @@
-import * as fs from "fs";
-import * as path from "path";
-import { generateUlid } from "./index";
+import { createClient } from "@supabase/supabase-js";
 
-export const saveImageToDisk = async (
-  base64File: string,
-  originalFileName: string,
-): Promise<string> => {
-  const matches = base64File.match(/^data:.+;base64,(.*)$/);
-  const base64Data = matches ? matches[1] : base64File;
+const SUPABASE_URL = process.env.SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
 
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function getMimeType(base64: string): string {
+  const match = base64.match(/^data:(image\/[a-zA-Z]+);base64,/);
+  if (!match) throw new Error("Invalid base64 image string");
+  return match[1];
+}
+
+export async function saveImageToSupabase(
+  fileBase64: string,
+  fileName: string,
+): Promise<string> {
+  const contentType = getMimeType(fileBase64);
+
+  const base64Data = fileBase64.replace(/^data:image\/[a-zA-Z]+;base64,/, "");
   const buffer = Buffer.from(base64Data, "base64");
 
-  const ext = originalFileName.split(".").pop();
-  const filename = `${generateUlid()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public/assets/images");
+  const { data, error: uploadError } = await supabase.storage
+    .from("gallery-images")
+    .upload(fileName, buffer, {
+      contentType,
+      upsert: true,
+    });
 
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+  if (uploadError) {
+    throw new Error(`Failed to upload image: ${uploadError.message}`);
   }
 
-  const fullPath = path.join(uploadDir, filename);
-  fs.writeFileSync(fullPath, buffer);
+  const { data: publicData } = supabase.storage
+    .from("gallery-images")
+    .getPublicUrl(fileName);
 
-  return `/assets/images/${filename}`;
-};
+  if (!publicData?.publicUrl) {
+    throw new Error("Failed to get public URL");
+  }
+
+  return publicData.publicUrl;
+}

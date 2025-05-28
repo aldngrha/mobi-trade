@@ -45,9 +45,7 @@ export default function GalleryTable({
               <TableCell>{p.product?.name}</TableCell>
               <TableCell>
                 <img
-                  src={
-                    `http://localhost:5173${p.imageUrl}` || "/placeholder.png"
-                  }
+                  src={p.imageUrl || "/placeholder.png"}
                   alt={p.product?.name}
                   className="w-16 h-16 object-cover"
                 />
