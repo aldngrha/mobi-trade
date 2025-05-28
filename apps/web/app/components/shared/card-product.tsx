@@ -61,7 +61,7 @@ export default function CardProduct({ product }: CardProductProps) {
             <Badge variant="outline">{product.variants[0].condition}</Badge>
           </div>
           <div className="mt-2 text-sm text-muted-foreground">
-            {product.description.substring(0, 400)}...
+            {product.description.substring(0, 100)}...
           </div>
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between items-center">

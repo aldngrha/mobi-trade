@@ -124,20 +124,7 @@ export default function ProductDialog({
               )}
             </div>
           ))}
-          <div className="grid gap-2">
-            <Label htmlFor="description mb-3">
-              Description
-              <span className="text-red-500 ml-1">*</span>
-            </Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-            {errors["description"] && (
-              <p className="text-sm text-red-500">{errors["description"]}</p>
-            )}
-          </div>
+
           <div className="flex justify-end gap-2 mt-4">
             <Button
               variant="outline"

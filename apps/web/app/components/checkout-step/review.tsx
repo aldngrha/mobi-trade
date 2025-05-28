@@ -194,15 +194,19 @@ export default function ReviewStep({ setStep, cartItems }: ReviewStepProps) {
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep("payment")}>
+        <CardFooter className="flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row justify-between">
+          <Button
+            variant="outline"
+            onClick={() => setStep("payment")}
+            className="w-full md:w-1/2"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Payment
           </Button>
           <Button
             onClick={handleSubmitOrder}
             disabled={checkoutMutation.isPending}
-            className="cursor-pointer"
+            className="cursor-pointer w-full md:w-1/2"
           >
             {checkoutMutation.isPending ? (
               <LoaderCircle className="animate-spin" />

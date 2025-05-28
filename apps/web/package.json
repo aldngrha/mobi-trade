@@ -2,6 +2,7 @@
   "name": "web",
   "private": true,
   "type": "module",
+  "homepage": "https://mobitrade.aldinugraha.me",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",

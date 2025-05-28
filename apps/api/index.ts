@@ -9,7 +9,7 @@ const app = new Hono();
 app.use(
   "/trpc/*",
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://mobitrade.aldinugraha.me",
     credentials: true,
   }),
 );

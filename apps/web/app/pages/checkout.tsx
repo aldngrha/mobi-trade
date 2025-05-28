@@ -105,13 +105,11 @@ export default function CheckoutPage() {
     updateOrderReference(generatedOrderRef);
   }, []);
 
-  console.log("Checkout Data:", checkoutData);
-
   return (
     <ProtectedRoute>
       <div className="flex min-h-screen flex-col">
         <Navbar onlyLogo={true} />
-        <main className="flex-1 py-8">
+        <main className="flex-1 py-8 p-4 md:p-0">
           <div className="container mx-auto">
             <div className="mb-8">
               <Link
@@ -133,8 +131,8 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="mb-8">
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center gap-2">
+                  <div className="flex gap-y-5 justify-between items-center mb-4">
+                    <div className="flex md:flex-row flex-col items-center gap-2">
                       <div
                         className={`flex h-8 w-8 items-center justify-center rounded-full ${
                           step === "cart"
@@ -147,7 +145,7 @@ export default function CheckoutPage() {
                       <span className="font-medium">Cart</span>
                     </div>
                     <Separator className="flex-1 mx-4" />
-                    <div className="flex items-center gap-2">
+                    <div className="flex md:flex-row flex-col items-center gap-2">
                       <div
                         className={`flex h-8 w-8 items-center justify-center rounded-full ${
                           step === "shipping"
@@ -160,7 +158,7 @@ export default function CheckoutPage() {
                       <span className="font-medium">Shipping</span>
                     </div>
                     <Separator className="flex-1 mx-4" />
-                    <div className="flex items-center gap-2">
+                    <div className="flex md:flex-row flex-col items-center gap-2">
                       <div
                         className={`flex h-8 w-8 items-center justify-center rounded-full ${
                           step === "payment"
@@ -173,7 +171,7 @@ export default function CheckoutPage() {
                       <span className="font-medium">Payment</span>
                     </div>
                     <Separator className="flex-1 mx-4" />
-                    <div className="flex items-center gap-2">
+                    <div className="flex md:flex-row flex-col items-center gap-2">
                       <div
                         className={`flex h-8 w-8 items-center justify-center rounded-full ${
                           step === "review"

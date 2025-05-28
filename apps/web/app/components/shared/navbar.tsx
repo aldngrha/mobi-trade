@@ -64,7 +64,7 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
-      <div className="flex h-16 items-center justify-between py-4 mx-auto container">
+      <div className="flex h-16 items-center justify-between py-4 mx-auto p-4 md:p-0 container">
         <div className="flex items-center gap-6">
           <Link
             to="/"
@@ -148,12 +148,12 @@ export default function Navbar({ onlyLogo, isSearch }: NavbarProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hidden md:flex cursor-pointer"
+                  className="cursor-pointer"
                   asChild
                 >
                   <Link to="/sign-in">Sign In</Link>
                 </Button>
-                <Button size="sm" className="hidden md:flex" asChild>
+                <Button size="sm" className="cursor-pointer" asChild>
                   <Link to="/sign-up">Sign Up</Link>
                 </Button>
               </>

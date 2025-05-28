@@ -117,12 +117,19 @@ export default function PaymentStep({
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep("shipping")}>
+        <CardFooter className="flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row justify-between">
+          <Button
+            variant="outline"
+            onClick={() => setStep("shipping")}
+            className="w-full md:w-1/2"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Shipping
           </Button>
-          <Button onClick={() => setStep("review")} className="cursor-pointer">
+          <Button
+            onClick={() => setStep("review")}
+            className="cursor-pointer w-full md:w-1/2"
+          >
             Review Order
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

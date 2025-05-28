@@ -181,12 +181,19 @@ export default function ShippingStep({
             </RadioGroup>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => setStep("cart")}>
+        <CardFooter className="flex flex-col space-y-4 md:space-y-0 md:space-x-4 md:flex-row justify-between">
+          <Button
+            variant="outline"
+            onClick={() => setStep("cart")}
+            className="w-full md:w-1/2"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Cart
           </Button>
-          <Button onClick={handleContinue} className="cursor-pointer">
+          <Button
+            onClick={handleContinue}
+            className="cursor-pointer w-full md:w-1/2"
+          >
             Continue to Payment
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
