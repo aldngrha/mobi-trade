@@ -1,84 +1,155 @@
-# Turborepo starter
 
-This Turborepo starter is maintained by the Turborepo core team.
+# 🧩 Monorepo with Bun, Turbo, and Prisma
 
-## Using this example
+This monorepo is structured using **Bun** as the runtime, **Turborepo** for task orchestration, and **Prisma** for database management.
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 📁 Folder Structure
 
 ```
-cd my-turborepo
-pnpm build
+mobi-trade/
+├── apps/
+│   ├── api/                  # Backend API (served from root)
+│   └── web/                  # Frontend app (served via dev inside web/)
+├── docker-compose.yaml       # Service orchestration for local development
+├── packages/                 # Shared libraries (optional)
+├── package.json              # Root-level config and scripts
+├── turbo.json                # Turbo configuration
 ```
 
-### Develop
+## 📸 Preview
 
-To develop all apps and packages, run the following command:
+### 🏠 Landing Page
 
-```
-cd my-turborepo
-pnpm dev
-```
+![Landing Page](https://kmjlymleaovyuvintnha.supabase.co/storage/v1/object/public/gallery-images//Screenshot%202025-05-29%20at%205.03.41%20PM.png)
 
-### Remote Caching
+### 📋 Detail Page
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+![Detail Page](https://kmjlymleaovyuvintnha.supabase.co/storage/v1/object/public/gallery-images//Screenshot%202025-05-29%20at%205.04.03%20PM.png)
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### 🛒 Checkout Page
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+![Checkout Page](https://kmjlymleaovyuvintnha.supabase.co/storage/v1/object/public/gallery-images//Screenshot%202025-05-29%20at%205.04.16%20PM.png)
 
-```
-cd my-turborepo
-npx turbo login
-```
+### 📊 Dashboard Page
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+![Dashboard Page](https://kmjlymleaovyuvintnha.supabase.co/storage/v1/object/public/gallery-images//Screenshot%202025-05-29%20at%205.12.25%20PM.png)
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
 
-```
-npx turbo link
+## 🚀 Getting Started
+
+### Install Dependencies
+
+```bash
+bun install
 ```
 
-## Useful Links
+## 🧪 Development
 
-Learn more about the power of Turborepo:
+### Run only the API
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+```bash
+bun run dev:api
+```
+
+### Run only the Web App
+
+```bash
+cd apps/web
+bun run dev
+```
+
+### Run Local DB with Docker
+
+```bash
+docker-compose up --build
+```
+
+## 🌐 Environment Variables
+
+### API (`apps/api/.env`)
+
+```
+DATABASE_URL="your-database-url"
+JWT_SECRET="your-secret"
+SUPABASE_URL="your-supabase-url"
+SUPABASE_ANON_KEY="your-api-key"
+```
+
+### Web (`apps/web/.env`)
+
+```
+VITE_APP_URL="your-backend-url"
+```
+
+## 🧬 Prisma
+
+### Migrate and Generate
+
+```bash
+bun prisma migrate deploy
+bun prisma generate
+```
+
+> For local development, you may also use:
+> 
+> ```bash
+> bun prisma migrate dev
+> ```
+
+### Seed the Database
+
+```bash
+bunx tsx prisma/seed.ts
+```
+
+## 📦 Runtime & Tools
+
+- Bun: `v1.2.13`
+- Node: `>=18`
+- Package Manager: **Bun**
+- Framework: **Hono**, **React**, **React Router 7**
+- Tools: **Turbo**, **Prisma**, **TypeScript**, **Prettier**
+
+## 🔧 Root Scripts (`package.json`)
+
+```json
+{
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:api": "bun run apps/api/index.ts",
+    "lint": "turbo run lint",
+    "seed": "bun run apps/api/prisma/seed.ts",
+    "format": "prettier --write "**/*.{ts,tsx,md}"",
+    "prisma:generate": "prisma generate --schema=apps/api/prisma/schema.prisma",
+    "check-types": "turbo run check-types"
+  }
+}
+```
+
+## 🚢 Deployment
+
+### API
+
+```bash
+bun run apps/api/index.ts
+```
+
+### Web App
+
+```bash
+cd apps/web
+bun run build
+bun run start
+```
+
+## ✅ Live Demo
+
+**Admin Login:**  
+- Email: `admin@mobitrade.com`  
+- Password: `admin123`
+
+- API: https://backend-mobitrade.aldinugraha.me  
+- Web: https://mobitrade.aldinugraha.me
+
+🕒 Note: Please allow up to 50 seconds for the data to load when accessing the app for the first time. The backend is hosted on Render's free tier, which may cause a delay due to cold starts. Thanks for your patience! 🙏
