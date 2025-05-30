@@ -43,13 +43,15 @@ export default function LandingPage() {
     // Filter by brand
     if (brandFilter !== "all") {
       filtered = filtered?.filter(
-        (p) => p.model.brand.name.toLowerCase() === brandFilter.toLowerCase(),
+        (p) =>
+          p.model?.brand?.name?.toLowerCase() === brandFilter.toLowerCase(),
       );
     }
 
     // Filter by tab category (price)
     filtered = filtered?.filter((product) => {
-      const price = Number(product.variants[0].price);
+      const price = Number(product.variants?.[0]?.price ?? 0);
+
       switch (tabFilter) {
         case "premium":
           return price > 500;
@@ -64,6 +66,9 @@ export default function LandingPage() {
 
     // Sort by option
     filtered?.sort((a, b) => {
+      const aPrice = Number(a.variants?.[0]?.price ?? 0);
+      const bPrice = Number(b.variants?.[0]?.price ?? 0);
+
       switch (sortOption) {
         case "newest":
           return (
@@ -74,9 +79,9 @@ export default function LandingPage() {
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           );
         case "price-low":
-          return Number(a.variants[0].price) - Number(b.variants[0].price);
+          return aPrice - bPrice;
         case "price-high":
-          return Number(b.variants[0].price) - Number(a.variants[0].price);
+          return bPrice - aPrice;
         default:
           return 0;
       }

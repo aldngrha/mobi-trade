@@ -10,19 +10,19 @@ async function main() {
   // await prisma.product.deleteMany();
   // await prisma.model.deleteMany();
   // await prisma.brand.deleteMany();
-  await prisma.user.deleteMany();
+  // await prisma.user.deleteMany();
 
-  const adminEmail = "admin@mobitrade.com";
-  const hashedPassword = await bcrypt.hash("admin123", 10);
-  await prisma.user.create({
-    data: {
-      id: generateUlid(),
-      email: adminEmail,
-      name: "Admin",
-      password: hashedPassword,
-      role: "ADMIN",
-    },
-  });
+  // const adminEmail = "admin@mobitrade.com";
+  // const hashedPassword = await bcrypt.hash("admin123", 10);
+  // await prisma.user.create({
+  //   data: {
+  //     id: generateUlid(),
+  //     email: adminEmail,
+  //     name: "Admin",
+  //     password: hashedPassword,
+  //     role: "ADMIN",
+  //   },
+  // });
 
   // const brandNames = ["Apple", "Samsung", "Xiaomi", "Oppo", "Vivo"];
   // const brands = await Promise.all(

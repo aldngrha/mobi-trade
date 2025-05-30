@@ -42,12 +42,6 @@ export const modelRouter = router({
     .input(modelUpdateSchema)
     .mutation(async ({ input }) => {
       const updated = await updateModel(input.id, input);
-      if (!updated) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: `Model with id "${input.id}" not found`,
-        });
-      }
       return updated;
     }),
 

@@ -26,7 +26,7 @@ export type Product = {
 
 type Gallery = {
   id: string | number;
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 type CardProductProps = {
@@ -34,16 +34,22 @@ type CardProductProps = {
 };
 
 export default function CardProduct({ product }: CardProductProps) {
+  const variant = product.variants?.[0] ?? {
+    price: 0,
+    condition: "N/A",
+    storage: "N/A",
+  };
+
   return (
     <Link to={`/product/${product.slug}`} key={product.id}>
       <Card className="h-full overflow-hidden transition-all hover:shadow-lg pt-0">
         <div className="aspect-square relative overflow-hidden ">
           <img
-            src={product.galleries[0].imageUrl || "/placeholder.svg"}
+            src={product.galleries?.[0]?.imageUrl || "/placeholder.svg"}
             alt={product.name}
             className="object-cover transition-transform hover:scale-105 w-full h-full"
           />
-          {product.variants[0]?.condition === "Like New" && (
+          {variant.condition === "Like New" && (
             <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
               Like New
             </Badge>
@@ -57,8 +63,8 @@ export default function CardProduct({ product }: CardProductProps) {
         <CardContent className="p-4">
           <h3 className="font-semibold text-lg line-clamp-1">{product.name}</h3>
           <div className="flex items-center gap-2 mt-1">
-            <Badge variant="outline">{product.variants[0].storage}</Badge>
-            <Badge variant="outline">{product.variants[0].condition}</Badge>
+            <Badge variant="outline">{variant.storage}</Badge>
+            <Badge variant="outline">{variant.condition}</Badge>
           </div>
           <div className="mt-2 text-sm text-muted-foreground">
             {product.description.substring(0, 100)}...
@@ -66,12 +72,12 @@ export default function CardProduct({ product }: CardProductProps) {
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between items-center">
           <div className="font-bold text-lg">
-            ${Number(product.variants[0].price).toFixed(2)}
+            ${Number(variant.price ?? 0).toFixed(2)}
             {(product.discount ?? 0) > 0 && (
               <span className="text-sm text-muted-foreground line-through ml-2">
                 $
                 {(
-                  product.variants[0].price *
+                  (variant.price ?? 0) *
                   (1 + (product.discount ?? 0) / 100)
                 ).toFixed(2)}
               </span>
